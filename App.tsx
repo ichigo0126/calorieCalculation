@@ -1,11 +1,11 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { HomeScreen } from "./screens/HomeScreen";
 import { CalendarScreen } from "./screens/CalendarScreen";
+import { MeasurementScreen } from "./screens/MeasurementScreen";
+import { ProfileScreen } from "./screens/ProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MeasurementScreen } from "./screens/MeasurementScreen";
 import { FontAwesome } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +31,8 @@ const screenOptions = ({ route }: ScreenOptionsProps) => ({
       return <FontAwesome name="list" size={size} color={color} />;
     } else if (route.name === "CalendarTab") {
       return <FontAwesome name="calendar" size={size} color={color} />;
+    } else if (route.name === "ProfileTab") {
+      return <FontAwesome name="user-o" size={size} color={color} />;
     }
     return null;
   },
@@ -62,8 +64,19 @@ const CalendarStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="Calendar"
         component={CalendarScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -76,20 +89,25 @@ export default function App() {
       <Tab.Navigator screenOptions={screenOptions}>
         {/* <Tab.Navigator> */}
         <Tab.Screen
-          name="MeasurementTab"
-          component={MeasurementStack}
-          options={{ title: "CalorieCalculation" }}
-        />
-        <Tab.Screen
           name="HomeTab"
           component={HomeStack}
           options={{ title: "Home" }}
+        />
+        <Tab.Screen
+          name="MeasurementTab"
+          component={MeasurementStack}
+          options={{ title: "CalorieCalculation" }}
         />
 
         <Tab.Screen
           name="CalendarTab"
           component={CalendarStack}
           options={{ title: "Calendar" }}
+        />
+        <Tab.Screen
+          name="ProfileTab"
+          component={ProfileStack}
+          options={{ title: "Profile" }}
         />
       </Tab.Navigator>
     </NavigationContainer>
