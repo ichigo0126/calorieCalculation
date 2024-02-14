@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { Pedometer } from "expo-sensors";
+import { Text } from "react-native-paper";
 
 export const HomeScreen = () => {
   const [isStart, setIsStart] = useState(true);
@@ -43,12 +38,23 @@ export const HomeScreen = () => {
       <SafeAreaView>
         <TouchableOpacity onPress={toggleButton}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>{isStart ? "開始" : "終了"}</Text>
+            <Text style={styles.buttonText} variant="headlineLarge">
+              {isStart ? "開始" : "終了"}
+            </Text>
           </View>
-          {!isStart && (
+          {/* {!isStart && (
             <Text>機能が使えるかどうか: {isPedometerAvailable}</Text>
-          )}
-          <View>{!isStart && <Text>歩数: {currentStepCount}</Text>}</View>
+          )} */}
+          <View>
+            {!isStart && (
+              <View>
+                <Text variant="headlineLarge" style={styles.numberOfStape}>
+                  歩数:{currentStepCount}
+                </Text>
+                {/* <Text>消費カロリー表示</Text> */}
+              </View>
+            )}
+          </View>
         </TouchableOpacity>
       </SafeAreaView>
     </View>
@@ -66,9 +72,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     width: 250,
+    marginBottom: 20,
   },
   buttonText: {
     textAlign: "center",
     padding: 10,
+  },
+  numberOfStape: {
+    textAlign: "center",
   },
 });
