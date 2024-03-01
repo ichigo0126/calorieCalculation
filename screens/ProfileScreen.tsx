@@ -24,7 +24,7 @@ export const ProfileScreen = () => {
           />
         </View>
         <View>
-          <Button mode="contained" onPress={() => console.log("Pressed")}>
+          <Button mode="contained" onPress={() => console.log("")}>
             保存
           </Button>
         </View>

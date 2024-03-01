@@ -2,12 +2,49 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { Pedometer } from "expo-sensors";
 import { Text } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const HomeScreen = () => {
   const [isStart, setIsStart] = useState(true);
   const [isPedometerAvailable, setIsPedometerAvailable] = useState("checking");
   const [currentStepCount, setCurrentStepCount] = useState(0);
   const [subscription, setSubscription] = useState(Object);
+
+  const saveStepCount = async (count: number) => {
+    try {
+      await AsyncStorage.setItem("stepCount", count.toString());
+    } catch (error) {
+      console.error("Error saving step count:", error);
+    }
+  };
+
+  const saveDate = async (date: string) => {
+    try {
+      await AsyncStorage.setItem("lastDate", date);
+    } catch (error) {
+      console.error("Error saving date:", error);
+    }
+  };
+
+  const loadStepCount = async () => {
+    try {
+      const count = await AsyncStorage.getItem("stepCount");
+      if (count !== null) {
+        setCurrentStepCount(parseInt(count, 10));
+      }
+    } catch (error) {
+      console.error("Error loading step count:", error);
+    }
+  };
+
+  const loadDate = async () => {
+    try {
+      const date = await AsyncStorage.getItem("lastDate");
+      return date;
+    } catch (error) {
+      console.error("Error loading date:", error);
+    }
+  };
 
   const subscribe = async () => {
     const isAvailable = await Pedometer.isAvailableAsync();
@@ -18,14 +55,32 @@ export const HomeScreen = () => {
       const start = new Date();
       start.setDate(end.getDate() - 1);
 
-      return Pedometer.watchStepCount((result) => {
-        setCurrentStepCount(result.steps);
+      const subscription = Pedometer.watchStepCount(async (result) => {
+        const today = new Date().toISOString().split("T")[0];
+        let lastDate = await loadDate();
+
+        if (!lastDate) {
+          lastDate = today;
+          saveDate(today);
+        }
+
+        if (today !== lastDate) {
+          setCurrentStepCount(result.steps);
+          saveStepCount(result.steps);
+          saveDate(today);
+        } else {
+          setCurrentStepCount(result.steps);
+          saveStepCount(result.steps);
+        }
       });
+
+      setSubscription(subscription);
     }
   };
 
   useEffect(() => {
     const subscription: any = subscribe();
+    loadStepCount();
     return () => subscription && subscription.remove();
   }, []);
 
@@ -42,16 +97,12 @@ export const HomeScreen = () => {
               {isStart ? "開始" : "終了"}
             </Text>
           </View>
-          {/* {!isStart && (
-            <Text>機能が使えるかどうか: {isPedometerAvailable}</Text>
-          )} */}
           <View>
             {!isStart && (
               <View>
                 <Text variant="headlineLarge" style={styles.numberOfStape}>
                   歩数:{currentStepCount}
                 </Text>
-                {/* <Text>消費カロリー表示</Text> */}
               </View>
             )}
           </View>
