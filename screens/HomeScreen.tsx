@@ -3,9 +3,12 @@ import { StyleSheet, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { Pedometer } from "expo-sensors";
 import { Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { useRoute } from "@react-navigation/native";
 
 export const HomeScreen = () => {
   const [isStart, setIsStart] = useState(true);
+  // const route = useRoute();
+  // const { height, weight } = route.params;
   const [isPedometerAvailable, setIsPedometerAvailable] = useState("checking");
   const [currentStepCount, setCurrentStepCount] = useState(0);
   const [subscription, setSubscription] = useState(Object);
@@ -102,6 +105,12 @@ export const HomeScreen = () => {
               <View>
                 <Text variant="headlineLarge" style={styles.numberOfStape}>
                   歩数:{currentStepCount}
+                </Text>
+                <Text variant="headlineLarge" style={styles.numberOfStape}>
+                  {/* {props.weight} */}
+                  消費カロリー
+                  {/* <Text>身長: {height}</Text>
+                  <Text>体重: {weight}</Text> */}
                 </Text>
               </View>
             )}

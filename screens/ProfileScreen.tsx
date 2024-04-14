@@ -1,9 +1,19 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, SafeAreaView } from "react-native";
-import { Text } from "react-native-paper";
-import { TextInput, Button } from "react-native-paper";
+import { Text, TextInput, Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = () => {
+  const [height, setHeight] = useState<string | undefined>(undefined); // 身長の状態変数を追加
+  const [weight, setWeight] = useState<string | undefined>(undefined); // 身長の状態変数を追加
+  const navigation = useNavigation();
+
+  const saveDataAndNavigate = () => {
+    if (height !== undefined && weight !== undefined) {
+        // navigation.navigate("HomeScreen", { height, weight });
+      }
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -13,6 +23,8 @@ export const ProfileScreen = () => {
             style={styles.input}
             mode="outlined"
             label="体重を記入してください"
+            value={weight} // 状態変数をテキスト入力フィールドにバインド
+            onChangeText={(text) => setWeight(text)} // 入力された値を状態変数に保存
           />
         </View>
         <View>
@@ -21,10 +33,15 @@ export const ProfileScreen = () => {
             style={styles.input}
             mode="outlined"
             label="身長を記入してください"
+            value={height} // 状態変数をテキスト入力フィールドにバインド
+            onChangeText={(text) => setHeight(text)} // 入力された値を状態変数に保存
           />
         </View>
         <View>
-          <Button mode="contained" onPress={() => console.log("")}>
+          <Button
+            mode="contained"
+            onPress={saveDataAndNavigate} // 身長をコンソールに出力
+          >
             保存
           </Button>
         </View>
@@ -38,16 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonContainer: {
-    backgroundColor: "rgb(238, 238, 238)",
-    borderRadius: 20,
-    borderWidth: 1,
-    width: 250,
-  },
-  buttonText: {
-    textAlign: "center",
-    padding: 10,
   },
   input: {
     width: 200,
