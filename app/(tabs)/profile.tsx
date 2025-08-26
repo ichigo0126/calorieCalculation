@@ -2,7 +2,7 @@ import { auth, db } from "@/config/firebase";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -12,6 +12,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -34,6 +35,17 @@ export default function ProfileScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // 編集フォーム用の状態
+  const [editForm, setEditForm] = useState({
+    name: "",
+    height: "",
+    weight: "",
+    age: "",
+    gender: "male",
+  });
 
   // ユーザープロフィールを取得
   useEffect(() => {
@@ -43,7 +55,16 @@ export default function ProfileScreen() {
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
-          setUserProfile(userDoc.data() as UserProfile);
+          const userData = userDoc.data() as UserProfile;
+          setUserProfile(userData);
+          // 編集フォームにデータをセット
+          setEditForm({
+            name: userData.name,
+            height: userData.height.toString(),
+            weight: userData.weight.toString(),
+            age: userData.age.toString(),
+            gender: userData.gender,
+          });
         }
       } catch (error) {
         console.error("プロフィール取得エラー:", error);
@@ -54,6 +75,114 @@ export default function ProfileScreen() {
 
     fetchUserProfile();
   }, [user]);
+
+  // BMR計算関数（Harris-Benedict式）
+  const calculateBMR = (
+    weight: number,
+    height: number,
+    age: number,
+    gender: string
+  ): number => {
+    if (gender === "male") {
+      return Math.round(
+        88.362 + 13.397 * weight + 4.799 * height - 5.677 * age
+      );
+    } else {
+      return Math.round(447.593 + 9.247 * weight + 3.098 * height - 4.33 * age);
+    }
+  };
+
+  // 編集モーダルを開く
+  const handleEditProfile = () => {
+    setShowEditModal(true);
+  };
+
+  // フォーム入力値を更新
+  const updateEditForm = (field: string, value: string) => {
+    setEditForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // バリデーション
+  const validateForm = (): string | null => {
+    if (!editForm.name.trim()) return "名前を入力してください";
+
+    const height = parseInt(editForm.height);
+    if (isNaN(height) || height < 100 || height > 250) {
+      return "身長は100-250cmの範囲で入力してください";
+    }
+
+    const weight = parseInt(editForm.weight);
+    if (isNaN(weight) || weight < 30 || weight > 200) {
+      return "体重は30-200kgの範囲で入力してください";
+    }
+
+    const age = parseInt(editForm.age);
+    if (isNaN(age) || age < 10 || age > 120) {
+      return "年齢は10-120歳の範囲で入力してください";
+    }
+
+    return null;
+  };
+
+  // プロフィール更新
+  const handleUpdateProfile = async () => {
+    const validationError = validateForm();
+    if (validationError) {
+      if (Platform.OS === "web") {
+        alert(validationError);
+      } else {
+        Alert.alert("入力エラー", validationError);
+      }
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const height = parseInt(editForm.height);
+      const weight = parseInt(editForm.weight);
+      const age = parseInt(editForm.age);
+
+      // BMRを再計算
+      const newBMR = calculateBMR(weight, height, age, editForm.gender);
+
+      const updatedData = {
+        name: editForm.name.trim(),
+        height,
+        weight,
+        age,
+        gender: editForm.gender,
+        bmr: newBMR,
+      };
+
+      // Firestoreを更新
+      if (user) {
+        await updateDoc(doc(db, "users", user.uid), updatedData);
+
+        // ローカル状態も更新
+        setUserProfile((prev) => (prev ? { ...prev, ...updatedData } : null));
+
+        setShowEditModal(false);
+
+        if (Platform.OS === "web") {
+          alert("プロフィールを更新しました！");
+        } else {
+          Alert.alert("更新完了", "プロフィールを更新しました！");
+        }
+      }
+    } catch (error) {
+      console.error("プロフィール更新エラー:", error);
+      if (Platform.OS === "web") {
+        alert("更新に失敗しました");
+      } else {
+        Alert.alert("エラー", "更新に失敗しました");
+      }
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const handleLogout = () => {
     if (Platform.OS === "web") {
@@ -174,7 +303,7 @@ export default function ProfileScreen() {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>⚙️ 設定</Text>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
           <Text style={styles.menuItemText}>📝 プロフィール編集</Text>
           <Text style={styles.menuItemArrow}>›</Text>
         </TouchableOpacity>
@@ -222,6 +351,137 @@ export default function ProfileScreen() {
           </Text>
         )}
       </View>
+
+      {/* プロフィール編集モーダル */}
+      <Modal
+        visible={showEditModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowEditModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.editModalContent}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={styles.modalTitle}>プロフィール編集</Text>
+
+              {/* 名前入力 */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>名前</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editForm.name}
+                  onChangeText={(value) => updateEditForm("name", value)}
+                  placeholder="名前を入力"
+                  maxLength={50}
+                />
+              </View>
+
+              {/* 身長入力 */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>身長 (cm)</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editForm.height}
+                  onChangeText={(value) => updateEditForm("height", value)}
+                  placeholder="身長を入力"
+                  keyboardType="numeric"
+                  maxLength={3}
+                />
+              </View>
+
+              {/* 体重入力 */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>体重 (kg)</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editForm.weight}
+                  onChangeText={(value) => updateEditForm("weight", value)}
+                  placeholder="体重を入力"
+                  keyboardType="numeric"
+                  maxLength={3}
+                />
+              </View>
+
+              {/* 年齢入力 */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>年齢</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={editForm.age}
+                  onChangeText={(value) => updateEditForm("age", value)}
+                  placeholder="年齢を入力"
+                  keyboardType="numeric"
+                  maxLength={3}
+                />
+              </View>
+
+              {/* 性別選択 */}
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>性別</Text>
+                <View style={styles.genderContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.genderButton,
+                      editForm.gender === "male" && styles.genderButtonActive,
+                    ]}
+                    onPress={() => updateEditForm("gender", "male")}
+                  >
+                    <Text
+                      style={[
+                        styles.genderButtonText,
+                        editForm.gender === "male" &&
+                          styles.genderButtonTextActive,
+                      ]}
+                    >
+                      男性
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.genderButton,
+                      editForm.gender === "female" && styles.genderButtonActive,
+                    ]}
+                    onPress={() => updateEditForm("gender", "female")}
+                  >
+                    <Text
+                      style={[
+                        styles.genderButtonText,
+                        editForm.gender === "female" &&
+                          styles.genderButtonTextActive,
+                      ]}
+                    >
+                      女性
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* ボタン */}
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.cancelButton]}
+                  onPress={() => setShowEditModal(false)}
+                  disabled={isUpdating}
+                >
+                  <Text style={styles.cancelButtonText}>キャンセル</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.confirmButton]}
+                  onPress={handleUpdateProfile}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? (
+                    <ActivityIndicator color="white" size="small" />
+                  ) : (
+                    <Text style={styles.confirmButtonText}>保存</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
       {/* Web環境用のログアウト確認モーダル */}
       <Modal
@@ -428,5 +688,62 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "white",
+  },
+  // 編集モーダル用スタイル
+  editModalContent: {
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 24,
+    maxWidth: 500,
+    width: "90%",
+    maxHeight: "85%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: "#f9f9f9",
+  },
+  genderContainer: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  genderButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#f9f9f9",
+    alignItems: "center",
+  },
+  genderButtonActive: {
+    backgroundColor: "#007AFF",
+    borderColor: "#007AFF",
+  },
+  genderButtonText: {
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "500",
+  },
+  genderButtonTextActive: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
