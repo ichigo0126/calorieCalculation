@@ -1,55 +1,50 @@
-import { useCallback, useEffect, useState } from '@lynx-js/react'
-
+import { useEffect } from '@lynx-js/react'
+import { AuthProvider, useAuth } from './contexts/AuthContext.js'
+import { TabNavigation } from './components/TabNavigation.js'
+import { AuthScreen } from './components/auth/AuthScreen.js'
 import './App.css'
-import arrow from './assets/arrow.png'
-import lynxLogo from './assets/lynx-logo.png'
-import reactLynxLogo from './assets/react-logo.png'
+
+function AppContent(props: { onRender?: () => void }) {
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    console.info('CalorieCalculation App Started')
+  }, [])
+
+  // 認証状態をロード中の場合
+  if (loading) {
+    return (
+      <view className="app-container">
+        <view className="loading-screen">
+          <text className="loading-text">読み込み中...</text>
+        </view>
+      </view>
+    );
+  }
+
+  // 認証されていない場合は認証画面を表示
+  if (!user) {
+    return (
+      <view className="app-container">
+        <AuthScreen />
+      </view>
+    );
+  }
+
+  // 認証されている場合はメインアプリを表示
+  return (
+    <view className="app-container">
+      <TabNavigation onRender={props.onRender} />
+    </view>
+  );
+}
 
 export function App(props: {
   onRender?: () => void
 }) {
-  const [alterLogo, setAlterLogo] = useState(false)
-
-  useEffect(() => {
-    console.info('Hello, ReactLynx')
-  }, [])
-  props.onRender?.()
-
-  const onTap = useCallback(() => {
-    'background only'
-    setAlterLogo(prevAlterLogo => !prevAlterLogo)
-  }, [])
-
   return (
-    <view>
-      <view className='Background' />
-      <view className='App'>
-        <view className='Banner'>
-          <view className='Logo' bindtap={onTap}>
-            {alterLogo
-              ? <image src={reactLynxLogo} className='Logo--react' />
-              : <image src={lynxLogo} className='Logo--lynx' />}
-          </view>
-          <text className='Title'>React</text>
-          <text className='Subtitle'>on Lynx</text>
-        </view>
-        <view className='Content'>
-          <image src={arrow} className='Arrow' />
-          <text className='Description'>Tap the logo and have fun!</text>
-          <text className='Hint'>
-            Edit<text
-              style={{
-                fontStyle: 'italic',
-                color: 'rgba(255, 255, 255, 0.85)',
-              }}
-            >
-              {' src/App.tsx '}
-            </text>
-            to see updates!
-          </text>
-        </view>
-        <view style={{ flex: 1 }} />
-      </view>
-    </view>
+    <AuthProvider>
+      <AppContent onRender={props.onRender} />
+    </AuthProvider>
   )
 }
