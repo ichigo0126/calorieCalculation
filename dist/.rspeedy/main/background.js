@@ -52202,7 +52202,8 @@ __webpack_require__.d(__webpack_exports__, {
 /* ESM import */var _contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("(react:background)/./src/contexts/AuthContext.tsx");
 /* ESM import */var _components_TabNavigation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("(react:background)/./src/components/TabNavigation.tsx");
 /* ESM import */var _components_auth_AuthScreen_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("(react:background)/./src/components/auth/AuthScreen.tsx");
-/* ESM import */var _App_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("(react:background)/./src/App.css");
+/* ESM import */var _components_auth_ProfileSetupScreen_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("(react:background)/./src/components/auth/ProfileSetupScreen.tsx");
+/* ESM import */var _App_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("(react:background)/./src/App.css");
 /* module decorator */ module = __webpack_require__.hmd(module);
 /* provided dependency */ var __prefresh_utils__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react-refresh-webpack-plugin/runtime/refresh.cjs");
 
@@ -52211,7 +52212,8 @@ __webpack_require__.d(__webpack_exports__, {
 
 
 
-const __snapshot_835da_fa212_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_fa212_1", function() {
+
+const __snapshot_835da_86942_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_86942_1", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "app-container");
@@ -52230,7 +52232,7 @@ const __snapshot_835da_fa212_1 = /*#__PURE__*/ (__webpack_require__("(react:back
         el3
     ];
 }, null, null, undefined, globDynamicComponentEntry, null);
-const __snapshot_835da_fa212_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_fa212_2", function() {
+const __snapshot_835da_86942_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_86942_2", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "app-container");
@@ -52238,7 +52240,15 @@ const __snapshot_835da_fa212_2 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_835da_fa212_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_fa212_3", function() {
+const __snapshot_835da_86942_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_86942_3", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "app-container");
+    return [
+        el
+    ];
+}, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
+const __snapshot_835da_86942_4 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_835da_86942_4", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "app-container");
@@ -52247,40 +52257,73 @@ const __snapshot_835da_fa212_3 = /*#__PURE__*/ (__webpack_require__("(react:back
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
 function AppContent(props) {
-    const { user, loading } = (0,_contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
+    const { user, loading, needsProfileSetup, saveUserProfile } = (0,_contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
     (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
         console.info('CalorieCalculation App Started');
     }, []);
+    (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
+        console.log('App state - user:', !!user, 'loading:', loading, 'needsProfileSetup:', needsProfileSetup);
+    }, [
+        user,
+        loading,
+        needsProfileSetup
+    ]);
+    const handleProfileComplete = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(async (profile)=>{
+        'background only';
+        console.log('handleProfileComplete called with:', profile);
+        try {
+            await saveUserProfile(profile);
+            console.log('Profile saved successfully');
+        } catch (error) {
+            console.error("\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB\u4FDD\u5B58\u5931\u6557:", error);
+        }
+    }, [
+        saveUserProfile
+    ]);
     // 認証状態をロード中の場合
-    if (loading) return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_fa212_1, {}, void 0, false, {
+    if (loading) return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_86942_1, {}, void 0, false, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-        lineNumber: 17,
+        lineNumber: 33,
         columnNumber: 7
     }, this);
     // 認証されていない場合は認証画面を表示
-    if (!user) return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_fa212_2, {
+    if (!user) return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_86942_2, {
         children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_components_auth_AuthScreen_js__WEBPACK_IMPORTED_MODULE_4__.AuthScreen, {}, void 0, false, {
             fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-            lineNumber: 29,
+            lineNumber: 45,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-        lineNumber: 28,
+        lineNumber: 44,
         columnNumber: 7
     }, this);
-    // 認証されている場合はメインアプリを表示
-    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_fa212_3, {
+    // ログイン済みだがプロフィール未設定の場合はプロフィール設定画面を表示
+    if (needsProfileSetup) return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_86942_3, {
+        children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_components_auth_ProfileSetupScreen_js__WEBPACK_IMPORTED_MODULE_5__.ProfileSetupScreen, {
+            onComplete: handleProfileComplete
+        }, void 0, false, {
+            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
+            lineNumber: 54,
+            columnNumber: 9
+        }, this)
+    }, void 0, false, {
+        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
+        lineNumber: 53,
+        columnNumber: 7
+    }, this);
+    // 認証済み且つプロフィール設定済みの場合はメインアプリを表示
+    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_835da_86942_4, {
         children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_components_TabNavigation_js__WEBPACK_IMPORTED_MODULE_3__.TabNavigation, {
             onRender: props.onRender
         }, void 0, false, {
             fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-            lineNumber: 37,
+            lineNumber: 62,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-        lineNumber: 36,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
@@ -52290,12 +52333,12 @@ function App(props) {
             onRender: props.onRender
         }, void 0, false, {
             fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-            lineNumber: 47,
+            lineNumber: 72,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/App.tsx",
-        lineNumber: 46,
+        lineNumber: 71,
         columnNumber: 5
     }, this);
 }
@@ -53028,6 +53071,431 @@ if (moduleHot) {
 
 
 }),
+"(react:background)/./src/components/auth/ProfileSetupScreen.tsx": (function (module, __webpack_exports__, __webpack_require__) {
+__webpack_require__.r(__webpack_exports__);
+__webpack_require__.d(__webpack_exports__, {
+  ProfileSetupScreen: () => (ProfileSetupScreen)
+});
+/* ESM import */var _lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/jsx-dev-runtime/index.js");
+/* ESM import */var _lynx_js_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/index.js");
+/* ESM import */var _common_InputField_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("(react:background)/./src/components/common/InputField.tsx");
+/* module decorator */ module = __webpack_require__.hmd(module);
+/* provided dependency */ var __prefresh_utils__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react-refresh-webpack-plugin/runtime/refresh.cjs");
+
+
+
+const __snapshot_50f50_b95f2_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_50f50_b95f2_1", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "profile-setup-screen");
+    const el1 = __CreateView(pageId);
+    __SetClasses(el1, "profile-setup-header");
+    __AppendElement(el, el1);
+    const el2 = __CreateText(pageId);
+    __SetClasses(el2, "profile-setup-title");
+    __AppendElement(el1, el2);
+    const el3 = __CreateRawText("\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB\u8A2D\u5B9A");
+    __AppendElement(el2, el3);
+    const el4 = __CreateText(pageId);
+    __SetClasses(el4, "profile-setup-subtitle");
+    __AppendElement(el1, el4);
+    const el5 = __CreateRawText("\u3088\u308A\u6B63\u78BA\u306A\u30AB\u30ED\u30EA\u30FC\u8A08\u7B97\u306E\u305F\u3081\u3001\u57FA\u672C\u60C5\u5831\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044");
+    __AppendElement(el4, el5);
+    const el6 = __CreateView(pageId);
+    __SetClasses(el6, "profile-setup-scroll");
+    __AppendElement(el, el6);
+    const el7 = __CreateView(pageId);
+    __SetClasses(el7, "profile-setup-form");
+    __AppendElement(el6, el7);
+    const el8 = __CreateView(pageId);
+    __SetClasses(el8, "form-group");
+    __AppendElement(el7, el8);
+    const el9 = __CreateText(pageId);
+    __SetClasses(el9, "form-label");
+    __AppendElement(el8, el9);
+    const el10 = __CreateRawText("\u8EAB\u9577 (cm)");
+    __AppendElement(el9, el10);
+    const el11 = __CreateWrapperElement(pageId);
+    __AppendElement(el8, el11);
+    const el12 = __CreateView(pageId);
+    __SetClasses(el12, "form-group");
+    __AppendElement(el7, el12);
+    const el13 = __CreateText(pageId);
+    __SetClasses(el13, "form-label");
+    __AppendElement(el12, el13);
+    const el14 = __CreateRawText("\u4F53\u91CD (kg)");
+    __AppendElement(el13, el14);
+    const el15 = __CreateWrapperElement(pageId);
+    __AppendElement(el12, el15);
+    const el16 = __CreateView(pageId);
+    __SetClasses(el16, "form-group");
+    __AppendElement(el7, el16);
+    const el17 = __CreateText(pageId);
+    __SetClasses(el17, "form-label");
+    __AppendElement(el16, el17);
+    const el18 = __CreateRawText("\u5E74\u9F62");
+    __AppendElement(el17, el18);
+    const el19 = __CreateWrapperElement(pageId);
+    __AppendElement(el16, el19);
+    const el20 = __CreateView(pageId);
+    __SetClasses(el20, "form-group");
+    __AppendElement(el7, el20);
+    const el21 = __CreateText(pageId);
+    __SetClasses(el21, "form-label");
+    __AppendElement(el20, el21);
+    const el22 = __CreateRawText("\u6027\u5225");
+    __AppendElement(el21, el22);
+    const el23 = __CreateView(pageId);
+    __SetClasses(el23, "gender-buttons");
+    __AppendElement(el20, el23);
+    const el24 = __CreateView(pageId);
+    __AppendElement(el23, el24);
+    const el25 = __CreateText(pageId);
+    __SetClasses(el25, "gender-button-text");
+    __AppendElement(el24, el25);
+    const el26 = __CreateRawText("\u7537\u6027");
+    __AppendElement(el25, el26);
+    const el27 = __CreateView(pageId);
+    __AppendElement(el23, el27);
+    const el28 = __CreateText(pageId);
+    __SetClasses(el28, "gender-button-text");
+    __AppendElement(el27, el28);
+    const el29 = __CreateRawText("\u5973\u6027");
+    __AppendElement(el28, el29);
+    const el30 = __CreateView(pageId);
+    __SetClasses(el30, "form-group");
+    __AppendElement(el7, el30);
+    const el31 = __CreateText(pageId);
+    __SetClasses(el31, "form-label");
+    __AppendElement(el30, el31);
+    const el32 = __CreateRawText("\u6D3B\u52D5\u30EC\u30D9\u30EB");
+    __AppendElement(el31, el32);
+    const el33 = __CreateView(pageId);
+    __SetClasses(el33, "activity-buttons");
+    __AppendElement(el30, el33);
+    const el34 = __CreateView(pageId);
+    __AppendElement(el33, el34);
+    const el35 = __CreateText(pageId);
+    __SetClasses(el35, "activity-button-text");
+    __AppendElement(el34, el35);
+    const el36 = __CreateRawText("\u4F4E\u3044");
+    __AppendElement(el35, el36);
+    const el37 = __CreateText(pageId);
+    __SetClasses(el37, "activity-button-desc");
+    __AppendElement(el34, el37);
+    const el38 = __CreateRawText("\u30C7\u30B9\u30AF\u30EF\u30FC\u30AF\u4E2D\u5FC3");
+    __AppendElement(el37, el38);
+    const el39 = __CreateView(pageId);
+    __AppendElement(el33, el39);
+    const el40 = __CreateText(pageId);
+    __SetClasses(el40, "activity-button-text");
+    __AppendElement(el39, el40);
+    const el41 = __CreateRawText("\u3084\u3084\u4F4E\u3044");
+    __AppendElement(el40, el41);
+    const el42 = __CreateText(pageId);
+    __SetClasses(el42, "activity-button-desc");
+    __AppendElement(el39, el42);
+    const el43 = __CreateRawText("\u8EFD\u3044\u904B\u52D5\u6642\u3005");
+    __AppendElement(el42, el43);
+    const el44 = __CreateView(pageId);
+    __AppendElement(el33, el44);
+    const el45 = __CreateText(pageId);
+    __SetClasses(el45, "activity-button-text");
+    __AppendElement(el44, el45);
+    const el46 = __CreateRawText("\u666E\u901A");
+    __AppendElement(el45, el46);
+    const el47 = __CreateText(pageId);
+    __SetClasses(el47, "activity-button-desc");
+    __AppendElement(el44, el47);
+    const el48 = __CreateRawText("\u5B9A\u671F\u7684\u306A\u904B\u52D5");
+    __AppendElement(el47, el48);
+    const el49 = __CreateView(pageId);
+    __AppendElement(el33, el49);
+    const el50 = __CreateText(pageId);
+    __SetClasses(el50, "activity-button-text");
+    __AppendElement(el49, el50);
+    const el51 = __CreateRawText("\u9AD8\u3044");
+    __AppendElement(el50, el51);
+    const el52 = __CreateText(pageId);
+    __SetClasses(el52, "activity-button-desc");
+    __AppendElement(el49, el52);
+    const el53 = __CreateRawText("\u6FC0\u3057\u3044\u904B\u52D5\u7FD2\u6163");
+    __AppendElement(el52, el53);
+    const el54 = __CreateView(pageId);
+    __SetClasses(el54, "profile-setup-buttons");
+    __AppendElement(el7, el54);
+    const el55 = __CreateView(pageId);
+    __AppendElement(el54, el55);
+    const el56 = __CreateText(pageId);
+    __SetClasses(el56, "complete-button-text");
+    __AppendElement(el55, el56);
+    const el57 = __CreateRawText("\u5B8C\u4E86");
+    __AppendElement(el56, el57);
+    return [
+        el,
+        el1,
+        el2,
+        el3,
+        el4,
+        el5,
+        el6,
+        el7,
+        el8,
+        el9,
+        el10,
+        el11,
+        el12,
+        el13,
+        el14,
+        el15,
+        el16,
+        el17,
+        el18,
+        el19,
+        el20,
+        el21,
+        el22,
+        el23,
+        el24,
+        el25,
+        el26,
+        el27,
+        el28,
+        el29,
+        el30,
+        el31,
+        el32,
+        el33,
+        el34,
+        el35,
+        el36,
+        el37,
+        el38,
+        el39,
+        el40,
+        el41,
+        el42,
+        el43,
+        el44,
+        el45,
+        el46,
+        el47,
+        el48,
+        el49,
+        el50,
+        el51,
+        el52,
+        el53,
+        el54,
+        el55,
+        el56,
+        el57
+    ];
+}, [
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[24], ctx.__values[0] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 24, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[27], ctx.__values[2] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 27, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[34], ctx.__values[4] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 34, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[39], ctx.__values[6] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 39, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[44], ctx.__values[8] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 44, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[49], ctx.__values[10] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 49, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[55], ctx.__values[12] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 55, "bindEvent", "tap", '')
+], [
+    [
+        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
+        11
+    ],
+    [
+        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
+        15
+    ],
+    [
+        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
+        19
+    ]
+], undefined, globDynamicComponentEntry, null);
+function ProfileSetupScreen({ onComplete }) {
+    const [profile, setProfile] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        height: '',
+        weight: '',
+        age: '',
+        gender: '',
+        activityLevel: ''
+    });
+    const handleInputChange = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((field, value)=>{
+        'background only';
+        setProfile((prev)=>({
+                ...prev,
+                [field]: value
+            }));
+    }, []);
+    const handleGenderSelect = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((gender)=>{
+        'background only';
+        setProfile((prev)=>({
+                ...prev,
+                gender
+            }));
+    }, []);
+    const handleActivitySelect = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((activityLevel)=>{
+        'background only';
+        setProfile((prev)=>({
+                ...prev,
+                activityLevel
+            }));
+    }, []);
+    const isFormValid = profile.height && profile.weight && profile.age && profile.gender && profile.activityLevel;
+    const handleComplete = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
+        'background only';
+        console.log('Complete button clicked, profile:', profile);
+        console.log('Form valid:', isFormValid);
+        if (isFormValid) {
+            console.log('Calling onComplete with profile');
+            onComplete(profile);
+        } else console.log('Form is not valid, cannot complete');
+    }, [
+        profile,
+        onComplete,
+        isFormValid
+    ]);
+    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_50f50_b95f2_1, {
+        values: [
+            `gender-button ${profile.gender === 'male' ? 'selected' : ''}`,
+            ()=>handleGenderSelect('male'),
+            `gender-button ${profile.gender === 'female' ? 'selected' : ''}`,
+            ()=>handleGenderSelect('female'),
+            `activity-button ${profile.activityLevel === 'sedentary' ? 'selected' : ''}`,
+            ()=>handleActivitySelect('sedentary'),
+            `activity-button ${profile.activityLevel === 'light' ? 'selected' : ''}`,
+            ()=>handleActivitySelect('light'),
+            `activity-button ${profile.activityLevel === 'moderate' ? 'selected' : ''}`,
+            ()=>handleActivitySelect('moderate'),
+            `activity-button ${profile.activityLevel === 'active' ? 'selected' : ''}`,
+            ()=>handleActivitySelect('active'),
+            `complete-button ${isFormValid ? '' : 'disabled'}`,
+            handleComplete
+        ],
+        children: [
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_2__.InputField, {
+                    value: profile.height,
+                    placeholder: "\u4F8B: 170",
+                    type: "text",
+                    className: "profile-input",
+                    onInput: (value)=>handleInputChange('height', value)
+                }, void 0, false, {
+                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/ProfileSetupScreen.tsx",
+                    lineNumber: 65,
+                    columnNumber: 13
+                }, this)
+            }, void 0, false, void 0, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_2__.InputField, {
+                    value: profile.weight,
+                    placeholder: "\u4F8B: 65",
+                    type: "text",
+                    className: "profile-input",
+                    onInput: (value)=>handleInputChange('weight', value)
+                }, void 0, false, {
+                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/ProfileSetupScreen.tsx",
+                    lineNumber: 76,
+                    columnNumber: 13
+                }, this)
+            }, void 0, false, void 0, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_2__.InputField, {
+                    value: profile.age,
+                    placeholder: "\u4F8B: 25",
+                    type: "text",
+                    className: "profile-input",
+                    onInput: (value)=>handleInputChange('age', value)
+                }, void 0, false, {
+                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/ProfileSetupScreen.tsx",
+                    lineNumber: 87,
+                    columnNumber: 13
+                }, this)
+            }, void 0, false, void 0, this)
+        ]
+    }, void 0, true, {
+        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/ProfileSetupScreen.tsx",
+        lineNumber: 55,
+        columnNumber: 5
+    }, this);
+}
+
+
+// @ts-nocheck
+const isPrefreshComponent = __prefresh_utils__.shouldBind(module);
+
+const moduleHot = module.hot;
+
+if (moduleHot) {
+  const currentExports = __prefresh_utils__.getExports(module);
+  const previousHotModuleExports = moduleHot.data
+    && moduleHot.data.moduleExports;
+
+  __prefresh_utils__.registerExports(currentExports, module.id);
+
+  if (isPrefreshComponent) {
+    if (previousHotModuleExports) {
+      try {
+        __prefresh_utils__.flush();
+        if (
+          typeof __prefresh_errors__ !== 'undefined'
+          && __prefresh_errors__
+          && __prefresh_errors__.clearRuntimeErrors
+        ) {
+          __prefresh_errors__.clearRuntimeErrors();
+        }
+      } catch (e) {
+        // Only available in newer webpack versions.
+        if (moduleHot.invalidate) {
+          moduleHot.invalidate();
+        } else {
+          globalThis.location.reload();
+        }
+      }
+    }
+
+    moduleHot.dispose(data => {
+      data.moduleExports = __prefresh_utils__.getExports(module);
+    });
+
+    moduleHot.accept(function errorRecovery() {
+      if (
+        typeof __prefresh_errors__ !== 'undefined'
+        && __prefresh_errors__
+        && __prefresh_errors__.handleRuntimeError
+      ) {
+        __prefresh_errors__.handleRuntimeError(error);
+      }
+
+      __webpack_require__.c[module.id].hot.accept(errorRecovery);
+    });
+  }
+}
+
+
+}),
 "(react:background)/./src/components/auth/SignupScreen.tsx": (function (module, __webpack_exports__, __webpack_require__) {
 __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, {
@@ -53043,7 +53511,7 @@ __webpack_require__.d(__webpack_exports__, {
 
 
 
-const __snapshot_cc1c8_5e685_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_5e685_2", function() {
+const __snapshot_cc1c8_4537e_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_4537e_2", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "error-message");
@@ -53060,7 +53528,7 @@ const __snapshot_cc1c8_5e685_2 = /*#__PURE__*/ (__webpack_require__("(react:back
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_cc1c8_5e685_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_5e685_3", function() {
+const __snapshot_cc1c8_4537e_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_4537e_3", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "auth-button-text");
@@ -53068,7 +53536,7 @@ const __snapshot_cc1c8_5e685_3 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_cc1c8_5e685_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_5e685_1", function() {
+const __snapshot_cc1c8_4537e_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_cc1c8_4537e_1", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "auth-screen");
@@ -53223,11 +53691,15 @@ function SignupScreen({ onSwitchToLogin }) {
         setError('');
         try {
             await register(email, password);
+            console.log('Registration successful');
         } catch (error) {
+            console.error('Registration error:', error);
             let errorMessage = "\u30A2\u30AB\u30A6\u30F3\u30C8\u4F5C\u6210\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002";
-            if (error.code === 'auth/email-already-in-use') errorMessage = "\u3053\u306E\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9\u306F\u65E2\u306B\u4F7F\u7528\u3055\u308C\u3066\u3044\u307E\u3059\u3002";
-            else if (error.code === 'auth/invalid-email') errorMessage = "\u7121\u52B9\u306A\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9\u3067\u3059\u3002";
-            else if (error.code === 'auth/weak-password') errorMessage = "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5F31\u3059\u304E\u307E\u3059\u3002";
+            if (error && error.code) {
+                if (error.code === 'auth/email-already-in-use') errorMessage = "\u3053\u306E\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9\u306F\u65E2\u306B\u4F7F\u7528\u3055\u308C\u3066\u3044\u307E\u3059\u3002";
+                else if (error.code === 'auth/invalid-email') errorMessage = "\u7121\u52B9\u306A\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9\u3067\u3059\u3002";
+                else if (error.code === 'auth/weak-password') errorMessage = "\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5F31\u3059\u304E\u307E\u3059\u3002";
+            }
             setError(errorMessage);
         } finally{
             setLoading(false);
@@ -53250,7 +53722,7 @@ function SignupScreen({ onSwitchToLogin }) {
         'background only';
         setConfirmPassword(value);
     }, []);
-    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_5e685_1, {
+    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_4537e_1, {
         values: [
             `auth-button ${loading ? 'auth-button-disabled' : ''}`,
             loading ? undefined : handleSignup,
@@ -53266,7 +53738,7 @@ function SignupScreen({ onSwitchToLogin }) {
                     onInput: handleEmailInput
                 }, void 0, false, {
                     fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-                    lineNumber: 81,
+                    lineNumber: 85,
                     columnNumber: 13
                 }, this)
             }, void 0, false, void 0, this),
@@ -53279,7 +53751,7 @@ function SignupScreen({ onSwitchToLogin }) {
                     onInput: handlePasswordInput
                 }, void 0, false, {
                     fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-                    lineNumber: 92,
+                    lineNumber: 96,
                     columnNumber: 13
                 }, this)
             }, void 0, false, void 0, this),
@@ -53292,30 +53764,30 @@ function SignupScreen({ onSwitchToLogin }) {
                     onInput: handleConfirmPasswordInput
                 }, void 0, false, {
                     fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-                    lineNumber: 103,
+                    lineNumber: 107,
                     columnNumber: 13
                 }, this)
             }, void 0, false, void 0, this),
             /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: error && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_5e685_2, {
+                children: error && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_4537e_2, {
                     children: error
                 }, void 0, false, {
                     fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-                    lineNumber: 113,
+                    lineNumber: 117,
                     columnNumber: 13
                 }, this)
             }, void 0, false, void 0, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_5e685_3, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_cc1c8_4537e_3, {
                 children: loading ? "\u30A2\u30AB\u30A6\u30F3\u30C8\u4F5C\u6210\u4E2D..." : "\u30A2\u30AB\u30A6\u30F3\u30C8\u4F5C\u6210"
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-                lineNumber: 122,
+                lineNumber: 126,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/auth/SignupScreen.tsx",
-        lineNumber: 71,
+        lineNumber: 75,
         columnNumber: 5
     }, this);
 }
@@ -53551,7 +54023,7 @@ __webpack_require__.d(__webpack_exports__, {
 /* provided dependency */ var __prefresh_utils__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react-refresh-webpack-plugin/runtime/refresh.cjs");
 
 
-const __snapshot_a6a41_637f7_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_2", function() {
+const __snapshot_a6a41_f1b02_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_2", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "input-modal-title");
@@ -53559,7 +54031,7 @@ const __snapshot_a6a41_637f7_2 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_3", function() {
+const __snapshot_a6a41_f1b02_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_3", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "input-display-text");
@@ -53567,7 +54039,7 @@ const __snapshot_a6a41_637f7_3 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_6 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_6", function() {
+const __snapshot_a6a41_f1b02_7 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_7", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "key-text");
@@ -53575,7 +54047,7 @@ const __snapshot_a6a41_637f7_6 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_5 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_5", function() {
+const __snapshot_a6a41_f1b02_6 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_6", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "key");
@@ -53593,7 +54065,7 @@ const __snapshot_a6a41_637f7_5 = /*#__PURE__*/ (__webpack_require__("(react:back
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_4 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_4", function() {
+const __snapshot_a6a41_f1b02_5 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_5", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "keyboard-row");
@@ -53601,7 +54073,7 @@ const __snapshot_a6a41_637f7_4 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_9 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_9", function() {
+const __snapshot_a6a41_f1b02_10 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_10", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "key-text");
@@ -53609,7 +54081,7 @@ const __snapshot_a6a41_637f7_9 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_8 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_8", function() {
+const __snapshot_a6a41_f1b02_9 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_9", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "key");
@@ -53627,7 +54099,7 @@ const __snapshot_a6a41_637f7_8 = /*#__PURE__*/ (__webpack_require__("(react:back
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_7 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_7", function() {
+const __snapshot_a6a41_f1b02_8 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_8", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "keyboard-row");
@@ -53635,7 +54107,109 @@ const __snapshot_a6a41_637f7_7 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_12 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_12", function() {
+const __snapshot_a6a41_f1b02_11 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_11", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "keyboard-row");
+    const el1 = __CreateView(pageId);
+    __SetClasses(el1, "key key-wide");
+    __AppendElement(el, el1);
+    const el2 = __CreateText(pageId);
+    __SetClasses(el2, "key-text");
+    __AppendElement(el1, el2);
+    const el3 = __CreateRawText("@");
+    __AppendElement(el2, el3);
+    const el4 = __CreateView(pageId);
+    __SetClasses(el4, "key");
+    __AppendElement(el, el4);
+    const el5 = __CreateText(pageId);
+    __SetClasses(el5, "key-text");
+    __AppendElement(el4, el5);
+    const el6 = __CreateRawText(".");
+    __AppendElement(el5, el6);
+    const el7 = __CreateView(pageId);
+    __SetClasses(el7, "key");
+    __AppendElement(el, el7);
+    const el8 = __CreateText(pageId);
+    __SetClasses(el8, "key-text");
+    __AppendElement(el7, el8);
+    const el9 = __CreateRawText("-");
+    __AppendElement(el8, el9);
+    const el10 = __CreateView(pageId);
+    __SetClasses(el10, "key");
+    __AppendElement(el, el10);
+    const el11 = __CreateText(pageId);
+    __SetClasses(el11, "key-text");
+    __AppendElement(el10, el11);
+    const el12 = __CreateRawText("_");
+    __AppendElement(el11, el12);
+    return [
+        el,
+        el1,
+        el2,
+        el3,
+        el4,
+        el5,
+        el6,
+        el7,
+        el8,
+        el9,
+        el10,
+        el11,
+        el12
+    ];
+}, [
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 1, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 4, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 7, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 10, "bindEvent", "tap", '')
+], null, undefined, globDynamicComponentEntry, null);
+const __snapshot_a6a41_f1b02_12 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_12", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "keyboard-row");
+    const el1 = __CreateView(pageId);
+    __SetClasses(el1, "key key-function");
+    __AppendElement(el, el1);
+    const el2 = __CreateText(pageId);
+    __SetClasses(el2, "key-text");
+    __AppendElement(el1, el2);
+    const el3 = __CreateRawText("ABC");
+    __AppendElement(el2, el3);
+    const el4 = __CreateView(pageId);
+    __SetClasses(el4, "key key-space");
+    __AppendElement(el, el4);
+    const el5 = __CreateText(pageId);
+    __SetClasses(el5, "key-text");
+    __AppendElement(el4, el5);
+    const el6 = __CreateRawText("\u30B9\u30DA\u30FC\u30B9");
+    __AppendElement(el5, el6);
+    const el7 = __CreateView(pageId);
+    __SetClasses(el7, "key key-delete");
+    __AppendElement(el, el7);
+    const el8 = __CreateText(pageId);
+    __SetClasses(el8, "key-text");
+    __AppendElement(el7, el8);
+    const el9 = __CreateRawText("\u232B");
+    __AppendElement(el8, el9);
+    return [
+        el,
+        el1,
+        el2,
+        el3,
+        el4,
+        el5,
+        el6,
+        el7,
+        el8,
+        el9
+    ];
+}, [
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 1, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 4, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 7, "bindEvent", "tap", '')
+], null, undefined, globDynamicComponentEntry, null);
+const __snapshot_a6a41_f1b02_15 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_15", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "key-text");
@@ -53643,7 +54217,7 @@ const __snapshot_a6a41_637f7_12 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_11 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_11", function() {
+const __snapshot_a6a41_f1b02_14 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_14", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "key");
@@ -53661,7 +54235,7 @@ const __snapshot_a6a41_637f7_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_10 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_10", function() {
+const __snapshot_a6a41_f1b02_13 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_13", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "keyboard-row");
@@ -53669,7 +54243,7 @@ const __snapshot_a6a41_637f7_10 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_15 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_15", function() {
+const __snapshot_a6a41_f1b02_18 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_18", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "key-text");
@@ -53677,7 +54251,7 @@ const __snapshot_a6a41_637f7_15 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_14 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_14", function() {
+const __snapshot_a6a41_f1b02_17 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_17", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "key");
@@ -53695,7 +54269,7 @@ const __snapshot_a6a41_637f7_14 = /*#__PURE__*/ (__webpack_require__("(react:bac
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_13 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_13", function() {
+const __snapshot_a6a41_f1b02_16 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_16", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "keyboard-row");
@@ -53703,7 +54277,7 @@ const __snapshot_a6a41_637f7_13 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_18 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_18", function() {
+const __snapshot_a6a41_f1b02_21 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_21", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "key-text");
@@ -53711,7 +54285,7 @@ const __snapshot_a6a41_637f7_18 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_17 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_17", function() {
+const __snapshot_a6a41_f1b02_20 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_20", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "key");
@@ -53729,15 +54303,103 @@ const __snapshot_a6a41_637f7_17 = /*#__PURE__*/ (__webpack_require__("(react:bac
         1
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_16 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_16", function() {
+const __snapshot_a6a41_f1b02_19 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_19", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "keyboard-row");
+    const el1 = __CreateView(pageId);
+    __AppendElement(el, el1);
+    const el2 = __CreateText(pageId);
+    __SetClasses(el2, "key-text");
+    __AppendElement(el1, el2);
+    const el3 = __CreateRawText("\u21E7");
+    __AppendElement(el2, el3);
+    const el4 = __CreateWrapperElement(pageId);
+    __AppendElement(el, el4);
+    const el5 = __CreateView(pageId);
+    __SetClasses(el5, "key key-delete");
+    __AppendElement(el, el5);
+    const el6 = __CreateText(pageId);
+    __SetClasses(el6, "key-text");
+    __AppendElement(el5, el6);
+    const el7 = __CreateRawText("\u232B");
+    __AppendElement(el6, el7);
+    return [
+        el,
+        el1,
+        el2,
+        el3,
+        el4,
+        el5,
+        el6,
+        el7
+    ];
+}, [
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[1], ctx.__values[0] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 1, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 5, "bindEvent", "tap", '')
+], [
+    [
+        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren */.__DynamicPartChildren),
+        4
+    ]
+], undefined, globDynamicComponentEntry, null);
+const __snapshot_a6a41_f1b02_22 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_22", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "keyboard-row");
+    const el1 = __CreateView(pageId);
+    __SetClasses(el1, "key key-function");
+    __AppendElement(el, el1);
+    const el2 = __CreateText(pageId);
+    __SetClasses(el2, "key-text");
+    __AppendElement(el1, el2);
+    const el3 = __CreateRawText("123");
+    __AppendElement(el2, el3);
+    const el4 = __CreateView(pageId);
+    __SetClasses(el4, "key key-space");
+    __AppendElement(el, el4);
+    const el5 = __CreateText(pageId);
+    __SetClasses(el5, "key-text");
+    __AppendElement(el4, el5);
+    const el6 = __CreateRawText("\u30B9\u30DA\u30FC\u30B9");
+    __AppendElement(el5, el6);
+    const el7 = __CreateView(pageId);
+    __SetClasses(el7, "key key-function");
+    __AppendElement(el, el7);
+    const el8 = __CreateText(pageId);
+    __SetClasses(el8, "key-text");
+    __AppendElement(el7, el8);
+    const el9 = __CreateRawText("\u5168\u524A\u9664");
+    __AppendElement(el8, el9);
+    return [
+        el,
+        el1,
+        el2,
+        el3,
+        el4,
+        el5,
+        el6,
+        el7,
+        el8,
+        el9
+    ];
+}, [
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 1, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 4, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 7, "bindEvent", "tap", '')
+], null, undefined, globDynamicComponentEntry, null);
+const __snapshot_a6a41_f1b02_4 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_4", function() {
+    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
+    const el = __CreateView(pageId);
+    __SetClasses(el, "virtual-keyboard");
     return [
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_a6a41_637f7_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_637f7_1", function() {
+const __snapshot_a6a41_f1b02_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_a6a41_f1b02_1", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "modal-overlay");
@@ -53757,70 +54419,27 @@ const __snapshot_a6a41_637f7_1 = /*#__PURE__*/ (__webpack_require__("(react:back
     __AppendElement(el4, el5);
     const el6 = __CreateWrapperElement(pageId);
     __AppendElement(el5, el6);
-    const el7 = __CreateView(pageId);
-    __SetClasses(el7, "virtual-keyboard");
+    const el7 = __CreateWrapperElement(pageId);
     __AppendElement(el4, el7);
-    const el8 = __CreateText(pageId);
-    __SetClasses(el8, "keyboard-hint");
-    __AppendElement(el7, el8);
-    const el9 = __CreateRawText("\u7C21\u6613\u30AD\u30FC\u30DC\u30FC\u30C9\uFF08\u57FA\u672C\u6587\u5B57\u306E\u307F\uFF09");
+    const el8 = __CreateView(pageId);
+    __SetClasses(el8, "input-modal-buttons");
+    __AppendElement(el1, el8);
+    const el9 = __CreateView(pageId);
+    __SetClasses(el9, "modal-button cancel");
     __AppendElement(el8, el9);
-    const el10 = __CreateWrapperElement(pageId);
-    __AppendElement(el7, el10);
-    const el11 = __CreateWrapperElement(pageId);
-    __AppendElement(el7, el11);
-    const el12 = __CreateWrapperElement(pageId);
-    __AppendElement(el7, el12);
-    const el13 = __CreateWrapperElement(pageId);
-    __AppendElement(el7, el13);
-    const el14 = __CreateWrapperElement(pageId);
-    __AppendElement(el7, el14);
-    const el15 = __CreateView(pageId);
-    __SetClasses(el15, "keyboard-row");
-    __AppendElement(el7, el15);
-    const el16 = __CreateView(pageId);
-    __SetClasses(el16, "key key-space");
-    __AppendElement(el15, el16);
-    const el17 = __CreateText(pageId);
-    __SetClasses(el17, "key-text");
-    __AppendElement(el16, el17);
-    const el18 = __CreateRawText("space");
-    __AppendElement(el17, el18);
-    const el19 = __CreateView(pageId);
-    __SetClasses(el19, "key key-delete");
-    __AppendElement(el15, el19);
-    const el20 = __CreateText(pageId);
-    __SetClasses(el20, "key-text");
-    __AppendElement(el19, el20);
-    const el21 = __CreateRawText("\u232B");
-    __AppendElement(el20, el21);
-    const el22 = __CreateView(pageId);
-    __SetClasses(el22, "key key-clear");
-    __AppendElement(el15, el22);
-    const el23 = __CreateText(pageId);
-    __SetClasses(el23, "key-text");
-    __AppendElement(el22, el23);
-    const el24 = __CreateRawText("clear");
-    __AppendElement(el23, el24);
-    const el25 = __CreateView(pageId);
-    __SetClasses(el25, "input-modal-buttons");
-    __AppendElement(el1, el25);
-    const el26 = __CreateView(pageId);
-    __SetClasses(el26, "modal-button cancel");
-    __AppendElement(el25, el26);
-    const el27 = __CreateText(pageId);
-    __SetClasses(el27, "modal-button-text");
-    __AppendElement(el26, el27);
-    const el28 = __CreateRawText("\u30AD\u30E3\u30F3\u30BB\u30EB");
-    __AppendElement(el27, el28);
-    const el29 = __CreateView(pageId);
-    __SetClasses(el29, "modal-button confirm");
-    __AppendElement(el25, el29);
-    const el30 = __CreateText(pageId);
-    __SetClasses(el30, "modal-button-text");
-    __AppendElement(el29, el30);
-    const el31 = __CreateRawText("OK");
-    __AppendElement(el30, el31);
+    const el10 = __CreateText(pageId);
+    __SetClasses(el10, "modal-button-text");
+    __AppendElement(el9, el10);
+    const el11 = __CreateRawText("\u30AD\u30E3\u30F3\u30BB\u30EB");
+    __AppendElement(el10, el11);
+    const el12 = __CreateView(pageId);
+    __SetClasses(el12, "modal-button confirm");
+    __AppendElement(el8, el12);
+    const el13 = __CreateText(pageId);
+    __SetClasses(el13, "modal-button-text");
+    __AppendElement(el12, el13);
+    const el14 = __CreateRawText("OK");
+    __AppendElement(el13, el14);
     return [
         el,
         el1,
@@ -53836,31 +54455,11 @@ const __snapshot_a6a41_637f7_1 = /*#__PURE__*/ (__webpack_require__("(react:back
         el11,
         el12,
         el13,
-        el14,
-        el15,
-        el16,
-        el17,
-        el18,
-        el19,
-        el20,
-        el21,
-        el22,
-        el23,
-        el24,
-        el25,
-        el26,
-        el27,
-        el28,
-        el29,
-        el30,
-        el31
+        el14
     ];
 }, [
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 16, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 19, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 22, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 26, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 29, "bindEvent", "tap", '')
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 9, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 12, "bindEvent", "tap", '')
 ], [
     [
         (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
@@ -53872,27 +54471,13 @@ const __snapshot_a6a41_637f7_1 = /*#__PURE__*/ (__webpack_require__("(react:back
     ],
     [
         (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        10
-    ],
-    [
-        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        11
-    ],
-    [
-        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        12
-    ],
-    [
-        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        13
-    ],
-    [
-        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        14
+        7
     ]
 ], undefined, globDynamicComponentEntry, null);
 function InputModal({ visible, title, placeholder, value, type = 'text', onConfirm, onCancel }) {
     const [inputValue, setInputValue] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(value);
+    const [capsLock, setCapsLock] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const [showNumbers, setShowNumbers] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(type === 'text' ? false : true);
     const handleConfirm = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
         'background only';
         onConfirm(inputValue);
@@ -53910,7 +54495,18 @@ function InputModal({ visible, title, placeholder, value, type = 'text', onConfi
     ]);
     const addCharacter = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((char)=>{
         'background only';
-        setInputValue((prev)=>prev + char);
+        const finalChar = capsLock && char.match(/[a-z]/) ? char.toUpperCase() : char;
+        setInputValue((prev)=>prev + finalChar);
+    }, [
+        capsLock
+    ]);
+    const toggleCapsLock = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
+        'background only';
+        setCapsLock((prev)=>!prev);
+    }, []);
+    const toggleKeyboardMode = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
+        'background only';
+        setShowNumbers((prev)=>!prev);
     }, []);
     const deleteCharacter = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
         'background only';
@@ -53922,190 +54518,243 @@ function InputModal({ visible, title, placeholder, value, type = 'text', onConfi
     }, []);
     if (!visible) return null;
     const displayValue = type === 'password' ? "\u25CF".repeat(inputValue.length) : inputValue;
-    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_1, {
+    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_1, {
         values: [
-            ()=>addCharacter(' '),
-            deleteCharacter,
-            clearInput,
             handleCancel,
             handleConfirm
         ],
         children: [
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_2, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_2, {
                 children: title
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                lineNumber: 58,
+                lineNumber: 71,
                 columnNumber: 11
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_3, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_3, {
                 children: displayValue || placeholder
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                lineNumber: 63,
+                lineNumber: 76,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_4, {
-                children: [
-                    '1',
-                    '2',
-                    '3',
-                    '4',
-                    '5',
-                    '6',
-                    '7',
-                    '8',
-                    '9',
-                    '0'
-                ].map((num)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_5, {
-                        values: [
-                            ()=>addCharacter(num)
-                        ],
-                        children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_6, {
-                            children: num
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_4, {
+                children: showNumbers ? /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                    children: [
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_5, {
+                            children: [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                                '6',
+                                '7',
+                                '8',
+                                '9',
+                                '0'
+                            ].map((num)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_6, {
+                                    values: [
+                                        ()=>addCharacter(num)
+                                    ],
+                                    children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_7, {
+                                        children: num
+                                    }, void 0, false, {
+                                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                        lineNumber: 89,
+                                        columnNumber: 23
+                                    }, this)
+                                }, num, false, {
+                                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                    lineNumber: 88,
+                                    columnNumber: 21
+                                }, this))
                         }, void 0, false, {
                             fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                            lineNumber: 76,
-                            columnNumber: 19
-                        }, this)
-                    }, num, false, {
-                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                        lineNumber: 75,
-                        columnNumber: 17
-                    }, this))
-            }, void 0, false, {
-                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                lineNumber: 73,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_7, {
-                children: [
-                    'q',
-                    'w',
-                    'e',
-                    'r',
-                    't',
-                    'y',
-                    'u',
-                    'i',
-                    'o',
-                    'p'
-                ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_8, {
-                        values: [
-                            ()=>addCharacter(letter)
-                        ],
-                        children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_9, {
-                            children: letter
+                            lineNumber: 86,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_8, {
+                            children: [
+                                '-',
+                                '=',
+                                '[',
+                                ']',
+                                '\\',
+                                ';',
+                                "'",
+                                ',',
+                                '.',
+                                '/'
+                            ].map((char)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_9, {
+                                    values: [
+                                        ()=>addCharacter(char)
+                                    ],
+                                    children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_10, {
+                                        children: char
+                                    }, void 0, false, {
+                                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                        lineNumber: 97,
+                                        columnNumber: 23
+                                    }, this)
+                                }, char, false, {
+                                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                    lineNumber: 96,
+                                    columnNumber: 21
+                                }, this))
                         }, void 0, false, {
                             fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                            lineNumber: 85,
+                            lineNumber: 94,
+                            columnNumber: 17
+                        }, this),
+                        type === 'email' && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_11, {
+                            values: [
+                                ()=>addCharacter('@'),
+                                ()=>addCharacter('.'),
+                                ()=>addCharacter('-'),
+                                ()=>addCharacter('_')
+                            ]
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 104,
                             columnNumber: 19
+                        }, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_12, {
+                            values: [
+                                toggleKeyboardMode,
+                                ()=>addCharacter(' '),
+                                deleteCharacter
+                            ]
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 121,
+                            columnNumber: 17
                         }, this)
-                    }, letter, false, {
-                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                        lineNumber: 84,
-                        columnNumber: 17
-                    }, this))
+                    ]
+                }, void 0, true) : /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                    children: [
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_13, {
+                            children: [
+                                'q',
+                                'w',
+                                'e',
+                                'r',
+                                't',
+                                'y',
+                                'u',
+                                'i',
+                                'o',
+                                'p'
+                            ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_14, {
+                                    values: [
+                                        ()=>addCharacter(letter)
+                                    ],
+                                    children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_15, {
+                                        children: capsLock ? letter.toUpperCase() : letter
+                                    }, void 0, false, {
+                                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                        lineNumber: 139,
+                                        columnNumber: 23
+                                    }, this)
+                                }, letter, false, {
+                                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                    lineNumber: 138,
+                                    columnNumber: 21
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 136,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_16, {
+                            children: [
+                                'a',
+                                's',
+                                'd',
+                                'f',
+                                'g',
+                                'h',
+                                'j',
+                                'k',
+                                'l'
+                            ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_17, {
+                                    values: [
+                                        ()=>addCharacter(letter)
+                                    ],
+                                    children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_18, {
+                                        children: capsLock ? letter.toUpperCase() : letter
+                                    }, void 0, false, {
+                                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                        lineNumber: 147,
+                                        columnNumber: 23
+                                    }, this)
+                                }, letter, false, {
+                                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                    lineNumber: 146,
+                                    columnNumber: 21
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 144,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_19, {
+                            values: [
+                                `key key-function ${capsLock ? 'active' : ''}`,
+                                toggleCapsLock,
+                                deleteCharacter
+                            ],
+                            children: [
+                                'z',
+                                'x',
+                                'c',
+                                'v',
+                                'b',
+                                'n',
+                                'm'
+                            ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_20, {
+                                    values: [
+                                        ()=>addCharacter(letter)
+                                    ],
+                                    children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_21, {
+                                        children: capsLock ? letter.toUpperCase() : letter
+                                    }, void 0, false, {
+                                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                        lineNumber: 158,
+                                        columnNumber: 23
+                                    }, this)
+                                }, letter, false, {
+                                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                                    lineNumber: 157,
+                                    columnNumber: 21
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 152,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_f1b02_22, {
+                            values: [
+                                toggleKeyboardMode,
+                                ()=>addCharacter(' '),
+                                clearInput
+                            ]
+                        }, void 0, false, {
+                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
+                            lineNumber: 167,
+                            columnNumber: 17
+                        }, this)
+                    ]
+                }, void 0, true)
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
                 lineNumber: 82,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_10, {
-                children: [
-                    'a',
-                    's',
-                    'd',
-                    'f',
-                    'g',
-                    'h',
-                    'j',
-                    'k',
-                    'l'
-                ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_11, {
-                        values: [
-                            ()=>addCharacter(letter)
-                        ],
-                        children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_12, {
-                            children: letter
-                        }, void 0, false, {
-                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                            lineNumber: 93,
-                            columnNumber: 19
-                        }, this)
-                    }, letter, false, {
-                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                        lineNumber: 92,
-                        columnNumber: 17
-                    }, this))
-            }, void 0, false, {
-                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                lineNumber: 90,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_13, {
-                children: [
-                    'z',
-                    'x',
-                    'c',
-                    'v',
-                    'b',
-                    'n',
-                    'm'
-                ].map((letter)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_14, {
-                        values: [
-                            ()=>addCharacter(letter)
-                        ],
-                        children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_15, {
-                            children: letter
-                        }, void 0, false, {
-                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                            lineNumber: 101,
-                            columnNumber: 19
-                        }, this)
-                    }, letter, false, {
-                        fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                        lineNumber: 100,
-                        columnNumber: 17
-                    }, this))
-            }, void 0, false, {
-                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                lineNumber: 98,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: type === 'email' && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_16, {
-                    children: [
-                        '@',
-                        '.',
-                        '-',
-                        '_'
-                    ].map((char)=>/*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_17, {
-                            values: [
-                                ()=>addCharacter(char)
-                            ],
-                            children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_a6a41_637f7_18, {
-                                children: char
-                            }, void 0, false, {
-                                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                                lineNumber: 111,
-                                columnNumber: 21
-                            }, this)
-                        }, char, false, {
-                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                            lineNumber: 110,
-                            columnNumber: 19
-                        }, this))
-                }, void 0, false, {
-                    fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-                    lineNumber: 108,
-                    columnNumber: 15
-                }, this)
-            }, void 0, false, void 0, this)
+                columnNumber: 11
+            }, this)
         ]
     }, void 0, true, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/common/InputModal.tsx",
-        lineNumber: 55,
+        lineNumber: 68,
         columnNumber: 5
     }, this);
 }
@@ -56132,12 +56781,14 @@ __webpack_require__.d(__webpack_exports__, {
 /* ESM import */var _lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/jsx-dev-runtime/index.js");
 /* ESM import */var _lynx_js_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/index.js");
 /* ESM import */var _contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("(react:background)/./src/contexts/AuthContext.tsx");
+/* ESM import */var _common_InputField_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("(react:background)/./src/components/common/InputField.tsx");
 /* module decorator */ module = __webpack_require__.hmd(module);
 /* provided dependency */ var __prefresh_utils__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react-refresh-webpack-plugin/runtime/refresh.cjs");
 
 
 
-const __snapshot_9ed80_05983_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_2", function() {
+
+const __snapshot_9ed80_d85f1_2 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_2", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "avatar-text");
@@ -56145,7 +56796,7 @@ const __snapshot_9ed80_05983_2 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_3", function() {
+const __snapshot_9ed80_d85f1_3 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_3", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "profile-name");
@@ -56153,7 +56804,7 @@ const __snapshot_9ed80_05983_3 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_4 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_4", function() {
+const __snapshot_9ed80_d85f1_4 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_4", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "detail-value");
@@ -56161,7 +56812,7 @@ const __snapshot_9ed80_05983_4 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_5 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_5", function() {
+const __snapshot_9ed80_d85f1_5 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_5", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "detail-value");
@@ -56169,7 +56820,7 @@ const __snapshot_9ed80_05983_5 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_6 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_6", function() {
+const __snapshot_9ed80_d85f1_6 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_6", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "detail-value");
@@ -56177,7 +56828,7 @@ const __snapshot_9ed80_05983_6 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_7 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_7", function() {
+const __snapshot_9ed80_d85f1_7 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_7", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "health-value");
@@ -56185,7 +56836,7 @@ const __snapshot_9ed80_05983_7 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_8 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_8", function() {
+const __snapshot_9ed80_d85f1_8 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_8", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     return [
@@ -56196,7 +56847,7 @@ const __snapshot_9ed80_05983_8 = /*#__PURE__*/ (__webpack_require__("(react:back
         if (ctx.__elements) __SetClasses(ctx.__elements[0], ctx.__values[0] || '');
     }
 ], (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_9 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_9", function() {
+const __snapshot_9ed80_d85f1_9 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_9", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "health-value");
@@ -56204,7 +56855,7 @@ const __snapshot_9ed80_05983_9 = /*#__PURE__*/ (__webpack_require__("(react:back
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_10 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_10", function() {
+const __snapshot_9ed80_d85f1_10 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_10", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateText(pageId);
     __SetClasses(el, "health-value");
@@ -56212,27 +56863,7 @@ const __snapshot_9ed80_05983_10 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el
     ];
 }, null, (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_12 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_12", function() {
-    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
-    const el = __CreateText(pageId);
-    __SetClasses(el, "form-input");
-    return [
-        el
-    ];
-}, [
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 0, "bindEvent", "tap", '')
-], (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_13 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_13", function() {
-    const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
-    const el = __CreateText(pageId);
-    __SetClasses(el, "form-input");
-    return [
-        el
-    ];
-}, [
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 0, "bindEvent", "tap", '')
-], (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartChildren_0 */.__DynamicPartChildren_0), undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_11", function() {
+const __snapshot_9ed80_d85f1_11 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_11", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "modal-overlay");
@@ -56253,7 +56884,7 @@ const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
     const el6 = __CreateText(pageId);
     __SetClasses(el6, "form-label");
     __AppendElement(el5, el6);
-    const el7 = __CreateRawText("\u540D\u524D");
+    const el7 = __CreateRawText("\u8EAB\u9577 (cm)");
     __AppendElement(el6, el7);
     const el8 = __CreateWrapperElement(pageId);
     __AppendElement(el5, el8);
@@ -56263,7 +56894,7 @@ const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
     const el10 = __CreateText(pageId);
     __SetClasses(el10, "form-label");
     __AppendElement(el9, el10);
-    const el11 = __CreateRawText("\u5E74\u9F62");
+    const el11 = __CreateRawText("\u4F53\u91CD (kg)");
     __AppendElement(el10, el11);
     const el12 = __CreateWrapperElement(pageId);
     __AppendElement(el9, el12);
@@ -56273,106 +56904,113 @@ const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
     const el14 = __CreateText(pageId);
     __SetClasses(el14, "form-label");
     __AppendElement(el13, el14);
-    const el15 = __CreateRawText("\u8EAB\u9577 (cm)");
+    const el15 = __CreateRawText("\u5E74\u9F62");
     __AppendElement(el14, el15);
-    const el16 = __CreateText(pageId);
-    __SetClasses(el16, "form-input");
+    const el16 = __CreateWrapperElement(pageId);
     __AppendElement(el13, el16);
-    const el17 = __CreateWrapperElement(pageId);
-    __AppendElement(el16, el17);
-    const el18 = __CreateRawText("cm");
-    __AppendElement(el16, el18);
-    const el19 = __CreateView(pageId);
-    __SetClasses(el19, "form-group");
-    __AppendElement(el4, el19);
-    const el20 = __CreateText(pageId);
-    __SetClasses(el20, "form-label");
-    __AppendElement(el19, el20);
-    const el21 = __CreateRawText("\u4F53\u91CD (kg)");
+    const el17 = __CreateView(pageId);
+    __SetClasses(el17, "form-group");
+    __AppendElement(el4, el17);
+    const el18 = __CreateText(pageId);
+    __SetClasses(el18, "form-label");
+    __AppendElement(el17, el18);
+    const el19 = __CreateRawText("\u6027\u5225");
+    __AppendElement(el18, el19);
+    const el20 = __CreateView(pageId);
+    __SetClasses(el20, "gender-buttons");
+    __AppendElement(el17, el20);
+    const el21 = __CreateView(pageId);
     __AppendElement(el20, el21);
     const el22 = __CreateText(pageId);
-    __SetClasses(el22, "form-input");
-    __AppendElement(el19, el22);
-    const el23 = __CreateWrapperElement(pageId);
+    __SetClasses(el22, "gender-button-text");
+    __AppendElement(el21, el22);
+    const el23 = __CreateRawText("\u7537\u6027");
     __AppendElement(el22, el23);
-    const el24 = __CreateRawText("kg");
-    __AppendElement(el22, el24);
-    const el25 = __CreateView(pageId);
-    __SetClasses(el25, "form-group");
-    __AppendElement(el4, el25);
-    const el26 = __CreateText(pageId);
-    __SetClasses(el26, "form-label");
+    const el24 = __CreateView(pageId);
+    __AppendElement(el20, el24);
+    const el25 = __CreateText(pageId);
+    __SetClasses(el25, "gender-button-text");
+    __AppendElement(el24, el25);
+    const el26 = __CreateRawText("\u5973\u6027");
     __AppendElement(el25, el26);
-    const el27 = __CreateRawText("\u6027\u5225");
-    __AppendElement(el26, el27);
-    const el28 = __CreateView(pageId);
-    __SetClasses(el28, "radio-group");
-    __AppendElement(el25, el28);
-    const el29 = __CreateView(pageId);
+    const el27 = __CreateView(pageId);
+    __SetClasses(el27, "form-group");
+    __AppendElement(el4, el27);
+    const el28 = __CreateText(pageId);
+    __SetClasses(el28, "form-label");
+    __AppendElement(el27, el28);
+    const el29 = __CreateRawText("\u6D3B\u52D5\u30EC\u30D9\u30EB");
     __AppendElement(el28, el29);
-    const el30 = __CreateText(pageId);
-    __SetClasses(el30, "radio-text");
-    __AppendElement(el29, el30);
-    const el31 = __CreateRawText("\u7537\u6027");
+    const el30 = __CreateView(pageId);
+    __SetClasses(el30, "activity-buttons");
+    __AppendElement(el27, el30);
+    const el31 = __CreateView(pageId);
     __AppendElement(el30, el31);
-    const el32 = __CreateView(pageId);
-    __AppendElement(el28, el32);
-    const el33 = __CreateText(pageId);
-    __SetClasses(el33, "radio-text");
+    const el32 = __CreateText(pageId);
+    __SetClasses(el32, "activity-button-text");
+    __AppendElement(el31, el32);
+    const el33 = __CreateRawText("\u4F4E\u3044");
     __AppendElement(el32, el33);
-    const el34 = __CreateRawText("\u5973\u6027");
-    __AppendElement(el33, el34);
-    const el35 = __CreateView(pageId);
-    __SetClasses(el35, "form-group");
-    __AppendElement(el4, el35);
-    const el36 = __CreateText(pageId);
-    __SetClasses(el36, "form-label");
-    __AppendElement(el35, el36);
-    const el37 = __CreateRawText("\u6D3B\u52D5\u30EC\u30D9\u30EB");
+    const el34 = __CreateText(pageId);
+    __SetClasses(el34, "activity-button-desc");
+    __AppendElement(el31, el34);
+    const el35 = __CreateRawText("\u30C7\u30B9\u30AF\u30EF\u30FC\u30AF\u4E2D\u5FC3");
+    __AppendElement(el34, el35);
+    const el36 = __CreateView(pageId);
+    __AppendElement(el30, el36);
+    const el37 = __CreateText(pageId);
+    __SetClasses(el37, "activity-button-text");
     __AppendElement(el36, el37);
-    const el38 = __CreateView(pageId);
-    __SetClasses(el38, "radio-group vertical");
-    __AppendElement(el35, el38);
-    const el39 = __CreateView(pageId);
-    __AppendElement(el38, el39);
-    const el40 = __CreateText(pageId);
-    __SetClasses(el40, "radio-text");
+    const el38 = __CreateRawText("\u3084\u3084\u4F4E\u3044");
+    __AppendElement(el37, el38);
+    const el39 = __CreateText(pageId);
+    __SetClasses(el39, "activity-button-desc");
+    __AppendElement(el36, el39);
+    const el40 = __CreateRawText("\u8EFD\u3044\u904B\u52D5\u6642\u3005");
     __AppendElement(el39, el40);
-    const el41 = __CreateRawText("\u4F4E\u3044\uFF08\u30C7\u30B9\u30AF\u30EF\u30FC\u30AF\u4E2D\u5FC3\uFF09");
-    __AppendElement(el40, el41);
-    const el42 = __CreateView(pageId);
-    __AppendElement(el38, el42);
-    const el43 = __CreateText(pageId);
-    __SetClasses(el43, "radio-text");
+    const el41 = __CreateView(pageId);
+    __AppendElement(el30, el41);
+    const el42 = __CreateText(pageId);
+    __SetClasses(el42, "activity-button-text");
+    __AppendElement(el41, el42);
+    const el43 = __CreateRawText("\u666E\u901A");
     __AppendElement(el42, el43);
-    const el44 = __CreateRawText("\u666E\u901A\uFF08\u8EFD\u3044\u904B\u52D5\uFF09");
-    __AppendElement(el43, el44);
-    const el45 = __CreateView(pageId);
-    __AppendElement(el38, el45);
-    const el46 = __CreateText(pageId);
-    __SetClasses(el46, "radio-text");
-    __AppendElement(el45, el46);
-    const el47 = __CreateRawText("\u9AD8\u3044\uFF08\u6FC0\u3057\u3044\u904B\u52D5\uFF09");
+    const el44 = __CreateText(pageId);
+    __SetClasses(el44, "activity-button-desc");
+    __AppendElement(el41, el44);
+    const el45 = __CreateRawText("\u5B9A\u671F\u7684\u306A\u904B\u52D5");
+    __AppendElement(el44, el45);
+    const el46 = __CreateView(pageId);
+    __AppendElement(el30, el46);
+    const el47 = __CreateText(pageId);
+    __SetClasses(el47, "activity-button-text");
     __AppendElement(el46, el47);
-    const el48 = __CreateView(pageId);
-    __SetClasses(el48, "modal-buttons");
-    __AppendElement(el1, el48);
-    const el49 = __CreateView(pageId);
-    __SetClasses(el49, "modal-button cancel");
-    __AppendElement(el48, el49);
-    const el50 = __CreateText(pageId);
-    __SetClasses(el50, "modal-button-text");
+    const el48 = __CreateRawText("\u9AD8\u3044");
+    __AppendElement(el47, el48);
+    const el49 = __CreateText(pageId);
+    __SetClasses(el49, "activity-button-desc");
+    __AppendElement(el46, el49);
+    const el50 = __CreateRawText("\u6FC0\u3057\u3044\u904B\u52D5\u7FD2\u6163");
     __AppendElement(el49, el50);
-    const el51 = __CreateRawText("\u30AD\u30E3\u30F3\u30BB\u30EB");
-    __AppendElement(el50, el51);
+    const el51 = __CreateView(pageId);
+    __SetClasses(el51, "modal-buttons");
+    __AppendElement(el4, el51);
     const el52 = __CreateView(pageId);
-    __SetClasses(el52, "modal-button confirm");
-    __AppendElement(el48, el52);
+    __SetClasses(el52, "modal-button cancel");
+    __AppendElement(el51, el52);
     const el53 = __CreateText(pageId);
     __SetClasses(el53, "modal-button-text");
     __AppendElement(el52, el53);
-    const el54 = __CreateRawText("\u4FDD\u5B58");
+    const el54 = __CreateRawText("\u30AD\u30E3\u30F3\u30BB\u30EB");
     __AppendElement(el53, el54);
+    const el55 = __CreateView(pageId);
+    __SetClasses(el55, "modal-button save");
+    __AppendElement(el51, el55);
+    const el56 = __CreateText(pageId);
+    __SetClasses(el56, "modal-button-text");
+    __AppendElement(el55, el56);
+    const el57 = __CreateRawText("\u4FDD\u5B58");
+    __AppendElement(el56, el57);
     return [
         el,
         el1,
@@ -56428,33 +57066,38 @@ const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
         el51,
         el52,
         el53,
-        el54
+        el54,
+        el55,
+        el56,
+        el57
     ];
 }, [
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 16, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 22, "bindEvent", "tap", ''),
     function(ctx) {
-        if (ctx.__elements) __SetClasses(ctx.__elements[29], ctx.__values[2] || '');
+        if (ctx.__elements) __SetClasses(ctx.__elements[21], ctx.__values[0] || '');
     },
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 29, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 21, "bindEvent", "tap", ''),
     function(ctx) {
-        if (ctx.__elements) __SetClasses(ctx.__elements[32], ctx.__values[4] || '');
+        if (ctx.__elements) __SetClasses(ctx.__elements[24], ctx.__values[2] || '');
     },
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 32, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 24, "bindEvent", "tap", ''),
     function(ctx) {
-        if (ctx.__elements) __SetClasses(ctx.__elements[39], ctx.__values[6] || '');
+        if (ctx.__elements) __SetClasses(ctx.__elements[31], ctx.__values[4] || '');
     },
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 39, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 31, "bindEvent", "tap", ''),
     function(ctx) {
-        if (ctx.__elements) __SetClasses(ctx.__elements[42], ctx.__values[8] || '');
+        if (ctx.__elements) __SetClasses(ctx.__elements[36], ctx.__values[6] || '');
     },
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 42, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 36, "bindEvent", "tap", ''),
     function(ctx) {
-        if (ctx.__elements) __SetClasses(ctx.__elements[45], ctx.__values[10] || '');
+        if (ctx.__elements) __SetClasses(ctx.__elements[41], ctx.__values[8] || '');
     },
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 45, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 49, "bindEvent", "tap", ''),
-    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 52, "bindEvent", "tap", '')
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 41, "bindEvent", "tap", ''),
+    function(ctx) {
+        if (ctx.__elements) __SetClasses(ctx.__elements[46], ctx.__values[10] || '');
+    },
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 46, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 52, "bindEvent", "tap", ''),
+    (snapshot, index, oldValue)=>(__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .updateEvent */.updateEvent)(snapshot, index, oldValue, 55, "bindEvent", "tap", '')
 ], [
     [
         (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
@@ -56466,14 +57109,10 @@ const __snapshot_9ed80_05983_11 = /*#__PURE__*/ (__webpack_require__("(react:bac
     ],
     [
         (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        17
-    ],
-    [
-        (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__DynamicPartSlot */.__DynamicPartSlot),
-        23
+        16
     ]
 ], undefined, globDynamicComponentEntry, null);
-const __snapshot_9ed80_05983_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_05983_1", function() {
+const __snapshot_9ed80_d85f1_1 = /*#__PURE__*/ (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .createSnapshot */.createSnapshot)("__snapshot_9ed80_d85f1_1", function() {
     const pageId = (__webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/internal.js")/* .__pageId */.__pageId);
     const el = __CreateView(pageId);
     __SetClasses(el, "profile-screen");
@@ -56833,56 +57472,94 @@ const __snapshot_9ed80_05983_1 = /*#__PURE__*/ (__webpack_require__("(react:back
     ]
 ], undefined, globDynamicComponentEntry, null);
 function ProfileScreen({ onRender }) {
-    const { user, logout } = (0,_contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
-    const [profile, setProfile] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-        name: (user === null || user === void 0 ? void 0 : user.displayName) || "\u592A\u90CE",
-        age: 30,
-        height: 170,
-        weight: 65,
-        gender: 'male',
-        activityLevel: 'moderate'
-    });
+    var _user_email;
+    const { user, userProfile, logout, saveUserProfile } = (0,_contexts_AuthContext_js__WEBPACK_IMPORTED_MODULE_2__.useAuth)();
     const [showEditModal, setShowEditModal] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-    const [editingProfile, setEditingProfile] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(profile);
+    const [editingProfile, setEditingProfile] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        height: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.height) || '',
+        weight: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.weight) || '',
+        age: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.age) || '',
+        gender: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.gender) || '',
+        activityLevel: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel) || ''
+    });
+    // userProfileが更新されたときに編集中プロフィールも更新
+    (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
+        if (userProfile) setEditingProfile({
+            height: userProfile.height,
+            weight: userProfile.weight,
+            age: userProfile.age,
+            gender: userProfile.gender,
+            activityLevel: userProfile.activityLevel
+        });
+    }, [
+        userProfile
+    ]);
     onRender === null || onRender === void 0 ? void 0 : onRender();
     // BMI計算
     const calculateBMI = ()=>{
-        const heightInM = profile.height / 100;
-        return (profile.weight / (heightInM * heightInM)).toFixed(1);
+        if (!(userProfile === null || userProfile === void 0 ? void 0 : userProfile.height) || !(userProfile === null || userProfile === void 0 ? void 0 : userProfile.weight)) return '---';
+        const heightInM = parseFloat(userProfile.height) / 100;
+        const weight = parseFloat(userProfile.weight);
+        return (weight / (heightInM * heightInM)).toFixed(1);
     };
     // 基礎代謝計算（Harris-Benedict式）
     const calculateBMR = ()=>{
-        if (profile.gender === 'male') return Math.round(88.362 + 13.397 * profile.weight + 4.799 * profile.height - 5.677 * profile.age);
-        else return Math.round(447.593 + 9.247 * profile.weight + 3.098 * profile.height - 4.330 * profile.age);
+        if (!(userProfile === null || userProfile === void 0 ? void 0 : userProfile.height) || !(userProfile === null || userProfile === void 0 ? void 0 : userProfile.weight) || !(userProfile === null || userProfile === void 0 ? void 0 : userProfile.age) || !(userProfile === null || userProfile === void 0 ? void 0 : userProfile.gender)) return 0;
+        const height = parseFloat(userProfile.height);
+        const weight = parseFloat(userProfile.weight);
+        const age = parseFloat(userProfile.age);
+        if (userProfile.gender === 'male') return Math.round(88.362 + 13.397 * weight + 4.799 * height - 5.677 * age);
+        else return Math.round(447.593 + 9.247 * weight + 3.098 * height - 4.330 * age);
     };
     // 推奨カロリー計算
     const calculateRecommendedCalories = ()=>{
         const bmr = calculateBMR();
+        if (bmr === 0 || !(userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel)) return 0;
         const activityMultipliers = {
-            low: 1.2,
+            sedentary: 1.2,
+            light: 1.375,
             moderate: 1.55,
-            high: 1.9
+            active: 1.9
         };
-        return Math.round(bmr * activityMultipliers[profile.activityLevel]);
+        return Math.round(bmr * (activityMultipliers[userProfile.activityLevel] || 1.2));
     };
     const handleEditPress = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
         'background only';
-        setEditingProfile({
-            ...profile
-        });
         setShowEditModal(true);
-    }, [
-        profile
-    ]);
-    const handleSaveProfile = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
+    }, []);
+    const handleSaveProfile = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(async ()=>{
         'background only';
-        setProfile({
-            ...editingProfile
-        });
-        setShowEditModal(false);
+        try {
+            await saveUserProfile(editingProfile);
+            setShowEditModal(false);
+        } catch (error) {
+            console.error("\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB\u4FDD\u5B58\u30A8\u30E9\u30FC:", error);
+        }
     }, [
-        editingProfile
+        editingProfile,
+        saveUserProfile
     ]);
+    const handleInputChange = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((field, value)=>{
+        'background only';
+        setEditingProfile((prev)=>({
+                ...prev,
+                [field]: value
+            }));
+    }, []);
+    const handleGenderSelect = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((gender)=>{
+        'background only';
+        setEditingProfile((prev)=>({
+                ...prev,
+                gender
+            }));
+    }, []);
+    const handleActivitySelect = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)((activityLevel)=>{
+        'background only';
+        setEditingProfile((prev)=>({
+                ...prev,
+                activityLevel
+            }));
+    }, []);
     const handleCloseModal = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(()=>{
         'background only';
         setShowEditModal(false);
@@ -56898,25 +57575,24 @@ function ProfileScreen({ onRender }) {
     }, [
         logout
     ]);
-    const updateEditingProfile = (field, value)=>{
-        setEditingProfile((prev)=>({
-                ...prev,
-                [field]: value
-            }));
-    };
     const bmi = calculateBMI();
     const bmr = calculateBMR();
     const recommendedCalories = calculateRecommendedCalories();
-    const getBMIStatus = (bmi)=>{
-        if (bmi < 18.5) return {
+    const getBMIStatus = (bmiValue)=>{
+        const bmiNum = parseFloat(bmiValue);
+        if (isNaN(bmiNum)) return {
+            status: '---',
+            color: 'gray'
+        };
+        if (bmiNum < 18.5) return {
             status: "\u4F4E\u4F53\u91CD",
             color: 'blue'
         };
-        if (bmi < 25) return {
+        if (bmiNum < 25) return {
             status: "\u6A19\u6E96",
             color: 'green'
         };
-        if (bmi < 30) return {
+        if (bmiNum < 30) return {
             status: "\u80A5\u6E80(1\u5EA6)",
             color: 'orange'
         };
@@ -56925,156 +57601,157 @@ function ProfileScreen({ onRender }) {
             color: 'red'
         };
     };
-    const bmiStatus = getBMIStatus(parseFloat(bmi));
-    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_1, {
+    const bmiStatus = getBMIStatus(bmi);
+    return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_1, {
         values: [
             handleEditPress,
             handleLogout
         ],
         children: [
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_2, {
-                children: profile.name.charAt(0)
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_2, {
+                children: (user === null || user === void 0 ? void 0 : (_user_email = user.email) === null || _user_email === void 0 ? void 0 : _user_email.charAt(0).toUpperCase()) || 'U'
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 113,
+                lineNumber: 138,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_3, {
-                children: profile.name
-            }, void 0, false, {
-                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 115,
-                columnNumber: 11
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_4, {
-                children: (user === null || user === void 0 ? void 0 : user.email) || "\u672A\u8A2D\u5B9A"
-            }, void 0, false, {
-                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 124,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: profile.age
-            }, void 0, false, void 0, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: profile.height
-            }, void 0, false, void 0, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: profile.weight
-            }, void 0, false, void 0, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_5, {
-                children: profile.gender === 'male' ? "\u7537\u6027" : "\u5973\u6027"
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_3, {
+                children: (user === null || user === void 0 ? void 0 : user.email) || "\u30E6\u30FC\u30B6\u30FC"
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
                 lineNumber: 140,
-                columnNumber: 13
+                columnNumber: 11
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_6, {
-                children: profile.activityLevel === 'low' ? "\u4F4E\u3044" : profile.activityLevel === 'moderate' ? "\u666E\u901A" : "\u9AD8\u3044"
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_4, {
+                children: (user === null || user === void 0 ? void 0 : user.email) || "\u672A\u8A2D\u5B9A"
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 144,
+                lineNumber: 149,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_7, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.age) || "\u672A\u8A2D\u5B9A"
+            }, void 0, false, void 0, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.height) || "\u672A\u8A2D\u5B9A"
+            }, void 0, false, void 0, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                children: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.weight) || "\u672A\u8A2D\u5B9A"
+            }, void 0, false, void 0, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_5, {
+                children: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.gender) === 'male' ? "\u7537\u6027" : (userProfile === null || userProfile === void 0 ? void 0 : userProfile.gender) === 'female' ? "\u5973\u6027" : "\u672A\u8A2D\u5B9A"
+            }, void 0, false, {
+                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
+                lineNumber: 165,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_6, {
+                children: (userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel) === 'sedentary' ? "\u4F4E\u3044" : (userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel) === 'light' ? "\u3084\u3084\u4F4E\u3044" : (userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel) === 'moderate' ? "\u666E\u901A" : (userProfile === null || userProfile === void 0 ? void 0 : userProfile.activityLevel) === 'active' ? "\u9AD8\u3044" : "\u672A\u8A2D\u5B9A"
+            }, void 0, false, {
+                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
+                lineNumber: 172,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_7, {
                 children: bmi
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 158,
+                lineNumber: 188,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_8, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_8, {
                 values: [
                     `health-status ${bmiStatus.color}`
                 ],
                 children: bmiStatus.status
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 159,
+                lineNumber: 189,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_9, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_9, {
                 children: bmr
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 163,
+                lineNumber: 193,
                 columnNumber: 13
             }, this),
-            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_10, {
+            /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_10, {
                 children: recommendedCalories
             }, void 0, false, {
                 fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                lineNumber: 168,
+                lineNumber: 198,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                children: showEditModal && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_11, {
+                children: showEditModal && /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_d85f1_11, {
                     values: [
-                        ()=>{
-                            const newHeight = prompt("\u8EAB\u9577\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044 (cm)", editingProfile.height.toString()) || editingProfile.height.toString();
-                            updateEditingProfile('height', parseInt(newHeight) || 0);
-                        },
-                        ()=>{
-                            const newWeight = prompt("\u4F53\u91CD\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044 (kg)", editingProfile.weight.toString()) || editingProfile.weight.toString();
-                            updateEditingProfile('weight', parseInt(newWeight) || 0);
-                        },
-                        `radio-option ${editingProfile.gender === 'male' ? 'selected' : ''}`,
-                        ()=>updateEditingProfile('gender', 'male'),
-                        `radio-option ${editingProfile.gender === 'female' ? 'selected' : ''}`,
-                        ()=>updateEditingProfile('gender', 'female'),
-                        `radio-option ${editingProfile.activityLevel === 'low' ? 'selected' : ''}`,
-                        ()=>updateEditingProfile('activityLevel', 'low'),
-                        `radio-option ${editingProfile.activityLevel === 'moderate' ? 'selected' : ''}`,
-                        ()=>updateEditingProfile('activityLevel', 'moderate'),
-                        `radio-option ${editingProfile.activityLevel === 'high' ? 'selected' : ''}`,
-                        ()=>updateEditingProfile('activityLevel', 'high'),
+                        `gender-button ${editingProfile.gender === 'male' ? 'selected' : ''}`,
+                        ()=>handleGenderSelect('male'),
+                        `gender-button ${editingProfile.gender === 'female' ? 'selected' : ''}`,
+                        ()=>handleGenderSelect('female'),
+                        `activity-button ${editingProfile.activityLevel === 'sedentary' ? 'selected' : ''}`,
+                        ()=>handleActivitySelect('sedentary'),
+                        `activity-button ${editingProfile.activityLevel === 'light' ? 'selected' : ''}`,
+                        ()=>handleActivitySelect('light'),
+                        `activity-button ${editingProfile.activityLevel === 'moderate' ? 'selected' : ''}`,
+                        ()=>handleActivitySelect('moderate'),
+                        `activity-button ${editingProfile.activityLevel === 'active' ? 'selected' : ''}`,
+                        ()=>handleActivitySelect('active'),
                         handleCloseModal,
                         handleSaveProfile
                     ],
                     children: [
-                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_12, {
-                            values: [
-                                ()=>{
-                                    const newName = prompt("\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", editingProfile.name) || editingProfile.name;
-                                    updateEditingProfile('name', newName);
-                                }
-                            ],
-                            children: editingProfile.name
-                        }, void 0, false, {
-                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                            lineNumber: 205,
-                            columnNumber: 17
-                        }, this),
-                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(__snapshot_9ed80_05983_13, {
-                            values: [
-                                ()=>{
-                                    const newAge = prompt("\u5E74\u9F62\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", editingProfile.age.toString()) || editingProfile.age.toString();
-                                    updateEditingProfile('age', parseInt(newAge) || 0);
-                                }
-                            ],
-                            children: editingProfile.age
-                        }, void 0, false, {
-                            fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                            lineNumber: 218,
-                            columnNumber: 17
-                        }, this),
                         /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                            children: editingProfile.height
+                            children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_3__.InputField, {
+                                value: editingProfile.height,
+                                placeholder: "\u4F8B: 170",
+                                type: "text",
+                                className: "profile-input",
+                                onInput: (value)=>handleInputChange('height', value)
+                            }, void 0, false, {
+                                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
+                                lineNumber: 236,
+                                columnNumber: 17
+                            }, this)
                         }, void 0, false, void 0, this),
                         /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
-                            children: editingProfile.weight
+                            children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_3__.InputField, {
+                                value: editingProfile.weight,
+                                placeholder: "\u4F8B: 65",
+                                type: "text",
+                                className: "profile-input",
+                                onInput: (value)=>handleInputChange('weight', value)
+                            }, void 0, false, {
+                                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
+                                lineNumber: 248,
+                                columnNumber: 17
+                            }, this)
+                        }, void 0, false, void 0, this),
+                        /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)("wrapper", {
+                            children: /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_common_InputField_js__WEBPACK_IMPORTED_MODULE_3__.InputField, {
+                                value: editingProfile.age,
+                                placeholder: "\u4F8B: 25",
+                                type: "text",
+                                className: "profile-input",
+                                onInput: (value)=>handleInputChange('age', value)
+                            }, void 0, false, {
+                                fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
+                                lineNumber: 260,
+                                columnNumber: 17
+                            }, this)
                         }, void 0, false, void 0, this)
                     ]
                 }, void 0, true, {
                     fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-                    lineNumber: 198,
+                    lineNumber: 228,
                     columnNumber: 9
                 }, this)
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/components/screens/ProfileScreen.tsx",
-        lineNumber: 108,
+        lineNumber: 133,
         columnNumber: 5
     }, this);
 }
@@ -57143,9 +57820,12 @@ __webpack_require__.d(__webpack_exports__, {
 /* ESM import */var _lynx_js_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react/runtime/lib/index.js");
 /* ESM import */var firebase_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("(react:background)/./node_modules/firebase/auth/dist/index.cjs.js");
 /* ESM import */var firebase_auth__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(firebase_auth__WEBPACK_IMPORTED_MODULE_2__);
-/* ESM import */var _config_firebase_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("(react:background)/./src/config/firebase.ts");
+/* ESM import */var firebase_firestore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("(react:background)/./node_modules/firebase/firestore/dist/index.cjs.js");
+/* ESM import */var firebase_firestore__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(firebase_firestore__WEBPACK_IMPORTED_MODULE_3__);
+/* ESM import */var _config_firebase_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("(react:background)/./src/config/firebase.ts");
 /* module decorator */ module = __webpack_require__.hmd(module);
 /* provided dependency */ var __prefresh_utils__ = __webpack_require__("(react:background)/./node_modules/@lynx-js/react-refresh-webpack-plugin/runtime/refresh.cjs");
+
 
 
 
@@ -57158,12 +57838,41 @@ function useAuth() {
 }
 function AuthProvider({ children }) {
     const [user, setUser] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+    const [userProfile, setUserProfile] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
     const [loading, setLoading] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(true);
+    const [needsProfileSetup, setNeedsProfileSetup] = (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
     (0,_lynx_js_react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
         try {
-            const unsubscribe = (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.onAuthStateChanged)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_3__.auth, (user)=>{
+            const unsubscribe = (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.onAuthStateChanged)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.auth, async (user)=>{
                 console.log('Auth state changed:', user);
+                console.log('User UID:', user === null || user === void 0 ? void 0 : user.uid);
                 setUser(user);
+                if (user) try {
+                    const docRef = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_3__.doc)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.db, 'users', user.uid);
+                    const docSnap = await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_3__.getDoc)(docRef);
+                    console.log('Profile document exists:', docSnap.exists());
+                    if (docSnap.exists()) {
+                        const profile = docSnap.data();
+                        console.log('Found profile:', profile);
+                        setUserProfile(profile);
+                        // プロフィールが完全かチェック
+                        const isComplete = profile.height && profile.weight && profile.age && profile.gender && profile.activityLevel;
+                        console.log('Profile is complete:', isComplete);
+                        setNeedsProfileSetup(!isComplete);
+                    } else {
+                        // プロフィールが存在しない場合
+                        console.log('No profile found, needs setup');
+                        setUserProfile(null);
+                        setNeedsProfileSetup(true);
+                    }
+                } catch (error) {
+                    console.error("\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB\u8AAD\u307F\u8FBC\u307F\u30A8\u30E9\u30FC:", error);
+                    setNeedsProfileSetup(true);
+                }
+                else {
+                    setUserProfile(null);
+                    setNeedsProfileSetup(false);
+                }
                 setLoading(false);
             });
             return unsubscribe;
@@ -57174,7 +57883,7 @@ function AuthProvider({ children }) {
     }, []);
     const login = async (email, password)=>{
         try {
-            await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.signInWithEmailAndPassword)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_3__.auth, email, password);
+            await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.signInWithEmailAndPassword)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.auth, email, password);
         } catch (error) {
             console.error("\u30ED\u30B0\u30A4\u30F3\u30A8\u30E9\u30FC:", error);
             throw error;
@@ -57182,15 +57891,29 @@ function AuthProvider({ children }) {
     };
     const register = async (email, password)=>{
         try {
-            await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.createUserWithEmailAndPassword)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_3__.auth, email, password);
+            console.log('Starting registration for:', email);
+            const userCredential = await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.createUserWithEmailAndPassword)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.auth, email, password);
+            console.log('Registration successful, user created:', userCredential.user.uid);
         } catch (error) {
             console.error("\u767B\u9332\u30A8\u30E9\u30FC:", error);
             throw error;
         }
     };
+    const saveUserProfile = async (profile)=>{
+        try {
+            if (!user) throw new Error("\u30E6\u30FC\u30B6\u30FC\u304C\u30ED\u30B0\u30A4\u30F3\u3057\u3066\u3044\u307E\u305B\u3093");
+            const docRef = (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_3__.doc)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.db, 'users', user.uid);
+            await (0,firebase_firestore__WEBPACK_IMPORTED_MODULE_3__.setDoc)(docRef, profile);
+            setUserProfile(profile);
+            setNeedsProfileSetup(false);
+        } catch (error) {
+            console.error("\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB\u4FDD\u5B58\u30A8\u30E9\u30FC:", error);
+            throw error;
+        }
+    };
     const logout = async ()=>{
         try {
-            await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.signOut)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_3__.auth);
+            await (0,firebase_auth__WEBPACK_IMPORTED_MODULE_2__.signOut)(_config_firebase_js__WEBPACK_IMPORTED_MODULE_4__.auth);
         } catch (error) {
             console.error("\u30ED\u30B0\u30A2\u30A6\u30C8\u30A8\u30E9\u30FC:", error);
             throw error;
@@ -57198,9 +57921,12 @@ function AuthProvider({ children }) {
     };
     const value = {
         user,
+        userProfile,
         loading,
+        needsProfileSetup,
         login,
         register,
+        saveUserProfile,
         logout
     };
     return /*#__PURE__*/ (0,_lynx_js_react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(AuthContext.Provider, {
@@ -57208,7 +57934,7 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "/Users/sakamaki/Documents/product/CalorieCalculation/src/contexts/AuthContext.tsx",
-        lineNumber: 88,
+        lineNumber: 152,
         columnNumber: 5
     }, this);
 }
@@ -57350,7 +58076,7 @@ __webpack_require__.r(__webpack_exports__);
   if (true) {
     (function() {
       var localsJsonString = undefined;
-      // 1756403438338
+      // 1756414771192
       var cssReload = __webpack_require__("(react:background)/./node_modules/@lynx-js/css-extract-webpack-plugin/runtime/hotModuleReplacement.cjs")(module.id, {}, "");
       // only invalidate when locals change
       if (
@@ -57465,7 +58191,7 @@ __webpack_require__.hu = (chunkId) => ('' + chunkId + '.' + __webpack_require__.
 })();
 // webpack/runtime/get_full_hash
 (() => {
-__webpack_require__.h = () => ("6893c971d5f35e1b")
+__webpack_require__.h = () => ("9f2055b564bc69fe")
 })();
 // webpack/runtime/get_main_filename/update manifest
 (() => {
@@ -57941,7 +58667,7 @@ if (typeof globalThis !== "undefined") {
 // webpack/runtime/lynx css hot update
 (() => {
 
-__webpack_require__.cssHotUpdateList = [["main",".rspeedy/main/main.429b58c9e0faf3dc.css.hot-update.json"]];
+__webpack_require__.cssHotUpdateList = [["main",".rspeedy/main/main.e795c457d876c2b0.css.hot-update.json"]];
 
 })();
 // webpack/runtime/make_namespace_object

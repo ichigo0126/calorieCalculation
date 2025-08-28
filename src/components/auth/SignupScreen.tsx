@@ -37,14 +37,18 @@ export function SignupScreen({ onSwitchToLogin }: SignupScreenProps) {
 
     try {
       await register(email, password);
+      console.log('Registration successful');
     } catch (error: any) {
+      console.error('Registration error:', error);
       let errorMessage = 'アカウント作成に失敗しました。';
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'このメールアドレスは既に使用されています。';
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = '無効なメールアドレスです。';
-      } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'パスワードが弱すぎます。';
+      if (error && error.code) {
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'このメールアドレスは既に使用されています。';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = '無効なメールアドレスです。';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'パスワードが弱すぎます。';
+        }
       }
       setError(errorMessage);
     } finally {

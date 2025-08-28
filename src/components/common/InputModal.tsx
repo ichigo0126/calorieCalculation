@@ -20,6 +20,8 @@ export function InputModal({
   onCancel
 }: InputModalProps) {
   const [inputValue, setInputValue] = useState(value);
+  const [capsLock, setCapsLock] = useState(false);
+  const [showNumbers, setShowNumbers] = useState(type === 'text' ? false : true);
 
   const handleConfirm = useCallback(() => {
     'background only';
@@ -34,7 +36,18 @@ export function InputModal({
 
   const addCharacter = useCallback((char: string) => {
     'background only';
-    setInputValue(prev => prev + char);
+    const finalChar = capsLock && char.match(/[a-z]/) ? char.toUpperCase() : char;
+    setInputValue(prev => prev + finalChar);
+  }, [capsLock]);
+
+  const toggleCapsLock = useCallback(() => {
+    'background only';
+    setCapsLock(prev => !prev);
+  }, []);
+
+  const toggleKeyboardMode = useCallback(() => {
+    'background only';
+    setShowNumbers(prev => !prev);
   }, []);
 
   const deleteCharacter = useCallback(() => {
@@ -65,67 +78,105 @@ export function InputModal({
             </text>
           </view>
 
-          {/* Simple keyboard for common characters */}
+          {/* Improved virtual keyboard */}
           <view className="virtual-keyboard">
-            <text className="keyboard-hint">簡易キーボード（基本文字のみ）</text>
-            
-            {/* Numbers */}
-            <view className="keyboard-row">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].map(num => (
-                <view key={num} className="key" bindtap={() => addCharacter(num)}>
-                  <text className="key-text">{num}</text>
+            {showNumbers ? (
+              <>
+                {/* Numbers and symbols */}
+                <view className="keyboard-row">
+                  {['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].map(num => (
+                    <view key={num} className="key" bindtap={() => addCharacter(num)}>
+                      <text className="key-text">{num}</text>
+                    </view>
+                  ))}
                 </view>
-              ))}
-            </view>
-
-            {/* Letters (basic set) */}
-            <view className="keyboard-row">
-              {['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].map(letter => (
-                <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
-                  <text className="key-text">{letter}</text>
+                
+                <view className="keyboard-row">
+                  {['-', '=', '[', ']', '\\', ';', "'", ',', '.', '/'].map(char => (
+                    <view key={char} className="key" bindtap={() => addCharacter(char)}>
+                      <text className="key-text">{char}</text>
+                    </view>
+                  ))}
                 </view>
-              ))}
-            </view>
 
-            <view className="keyboard-row">
-              {['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'].map(letter => (
-                <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
-                  <text className="key-text">{letter}</text>
-                </view>
-              ))}
-            </view>
-
-            <view className="keyboard-row">
-              {['z', 'x', 'c', 'v', 'b', 'n', 'm'].map(letter => (
-                <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
-                  <text className="key-text">{letter}</text>
-                </view>
-              ))}
-            </view>
-
-            {/* Special characters for email */}
-            {type === 'email' && (
-              <view className="keyboard-row">
-                {['@', '.', '-', '_'].map(char => (
-                  <view key={char} className="key" bindtap={() => addCharacter(char)}>
-                    <text className="key-text">{char}</text>
+                {/* Email specific characters */}
+                {type === 'email' && (
+                  <view className="keyboard-row">
+                    <view className="key key-wide" bindtap={() => addCharacter('@')}>
+                      <text className="key-text">@</text>
+                    </view>
+                    <view className="key" bindtap={() => addCharacter('.')}>
+                      <text className="key-text">.</text>
+                    </view>
+                    <view className="key" bindtap={() => addCharacter('-')}>
+                      <text className="key-text">-</text>
+                    </view>
+                    <view className="key" bindtap={() => addCharacter('_')}>
+                      <text className="key-text">_</text>
+                    </view>
                   </view>
-                ))}
-              </view>
-            )}
+                )}
 
-            {/* Control buttons */}
-            <view className="keyboard-row">
-              <view className="key key-space" bindtap={() => addCharacter(' ')}>
-                <text className="key-text">space</text>
-              </view>
-              <view className="key key-delete" bindtap={deleteCharacter}>
-                <text className="key-text">⌫</text>
-              </view>
-              <view className="key key-clear" bindtap={clearInput}>
-                <text className="key-text">clear</text>
-              </view>
-            </view>
+                {/* Switch to letters */}
+                <view className="keyboard-row">
+                  <view className="key key-function" bindtap={toggleKeyboardMode}>
+                    <text className="key-text">ABC</text>
+                  </view>
+                  <view className="key key-space" bindtap={() => addCharacter(' ')}>
+                    <text className="key-text">スペース</text>
+                  </view>
+                  <view className="key key-delete" bindtap={deleteCharacter}>
+                    <text className="key-text">⌫</text>
+                  </view>
+                </view>
+              </>
+            ) : (
+              <>
+                {/* Letters */}
+                <view className="keyboard-row">
+                  {['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].map(letter => (
+                    <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
+                      <text className="key-text">{capsLock ? letter.toUpperCase() : letter}</text>
+                    </view>
+                  ))}
+                </view>
+
+                <view className="keyboard-row">
+                  {['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'].map(letter => (
+                    <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
+                      <text className="key-text">{capsLock ? letter.toUpperCase() : letter}</text>
+                    </view>
+                  ))}
+                </view>
+
+                <view className="keyboard-row">
+                  <view className={`key key-function ${capsLock ? 'active' : ''}`} bindtap={toggleCapsLock}>
+                    <text className="key-text">⇧</text>
+                  </view>
+                  {['z', 'x', 'c', 'v', 'b', 'n', 'm'].map(letter => (
+                    <view key={letter} className="key" bindtap={() => addCharacter(letter)}>
+                      <text className="key-text">{capsLock ? letter.toUpperCase() : letter}</text>
+                    </view>
+                  ))}
+                  <view className="key key-delete" bindtap={deleteCharacter}>
+                    <text className="key-text">⌫</text>
+                  </view>
+                </view>
+
+                {/* Bottom row */}
+                <view className="keyboard-row">
+                  <view className="key key-function" bindtap={toggleKeyboardMode}>
+                    <text className="key-text">123</text>
+                  </view>
+                  <view className="key key-space" bindtap={() => addCharacter(' ')}>
+                    <text className="key-text">スペース</text>
+                  </view>
+                  <view className="key key-function" bindtap={clearInput}>
+                    <text className="key-text">全削除</text>
+                  </view>
+                </view>
+              </>
+            )}
           </view>
         </view>
 

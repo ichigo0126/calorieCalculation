@@ -1,73 +1,103 @@
-import { useState, useCallback } from '@lynx-js/react';
+import { useState, useCallback, useEffect } from '@lynx-js/react';
 import { useAuth } from '../../contexts/AuthContext.js';
-
-interface UserProfile {
-  name: string;
-  age: number;
-  height: number;
-  weight: number;
-  gender: 'male' | 'female';
-  activityLevel: 'low' | 'moderate' | 'high';
-}
+import { InputField } from '../common/InputField.js';
 
 interface ProfileScreenProps {
   onRender?: () => void;
 }
 
 export function ProfileScreen({ onRender }: ProfileScreenProps) {
-  const { user, logout } = useAuth();
+  const { user, userProfile, logout, saveUserProfile } = useAuth();
   
-  const [profile, setProfile] = useState<UserProfile>({
-    name: user?.displayName || '太郎',
-    age: 30,
-    height: 170,
-    weight: 65,
-    gender: 'male',
-    activityLevel: 'moderate'
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingProfile, setEditingProfile] = useState({
+    height: userProfile?.height || '',
+    weight: userProfile?.weight || '',
+    age: userProfile?.age || '',
+    gender: userProfile?.gender || '',
+    activityLevel: userProfile?.activityLevel || ''
   });
 
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editingProfile, setEditingProfile] = useState<UserProfile>(profile);
+  // userProfileが更新されたときに編集中プロフィールも更新
+  useEffect(() => {
+    if (userProfile) {
+      setEditingProfile({
+        height: userProfile.height,
+        weight: userProfile.weight,
+        age: userProfile.age,
+        gender: userProfile.gender,
+        activityLevel: userProfile.activityLevel
+      });
+    }
+  }, [userProfile]);
 
   onRender?.();
 
   // BMI計算
   const calculateBMI = () => {
-    const heightInM = profile.height / 100;
-    return (profile.weight / (heightInM * heightInM)).toFixed(1);
+    if (!userProfile?.height || !userProfile?.weight) return '---';
+    const heightInM = parseFloat(userProfile.height) / 100;
+    const weight = parseFloat(userProfile.weight);
+    return (weight / (heightInM * heightInM)).toFixed(1);
   };
 
   // 基礎代謝計算（Harris-Benedict式）
   const calculateBMR = () => {
-    if (profile.gender === 'male') {
-      return Math.round(88.362 + (13.397 * profile.weight) + (4.799 * profile.height) - (5.677 * profile.age));
+    if (!userProfile?.height || !userProfile?.weight || !userProfile?.age || !userProfile?.gender) return 0;
+    const height = parseFloat(userProfile.height);
+    const weight = parseFloat(userProfile.weight);
+    const age = parseFloat(userProfile.age);
+    
+    if (userProfile.gender === 'male') {
+      return Math.round(88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age));
     } else {
-      return Math.round(447.593 + (9.247 * profile.weight) + (3.098 * profile.height) - (4.330 * profile.age));
+      return Math.round(447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age));
     }
   };
 
   // 推奨カロリー計算
   const calculateRecommendedCalories = () => {
     const bmr = calculateBMR();
+    if (bmr === 0 || !userProfile?.activityLevel) return 0;
+    
     const activityMultipliers = {
-      low: 1.2,
+      sedentary: 1.2,
+      light: 1.375,
       moderate: 1.55,
-      high: 1.9
+      active: 1.9
     };
-    return Math.round(bmr * activityMultipliers[profile.activityLevel]);
+    return Math.round(bmr * (activityMultipliers[userProfile.activityLevel as keyof typeof activityMultipliers] || 1.2));
   };
 
   const handleEditPress = useCallback(() => {
     'background only';
-    setEditingProfile({ ...profile });
     setShowEditModal(true);
-  }, [profile]);
+  }, []);
 
-  const handleSaveProfile = useCallback(() => {
+  const handleSaveProfile = useCallback(async () => {
     'background only';
-    setProfile({ ...editingProfile });
-    setShowEditModal(false);
-  }, [editingProfile]);
+    try {
+      await saveUserProfile(editingProfile);
+      setShowEditModal(false);
+    } catch (error) {
+      console.error('プロフィール保存エラー:', error);
+    }
+  }, [editingProfile, saveUserProfile]);
+
+  const handleInputChange = useCallback((field: string, value: string) => {
+    'background only';
+    setEditingProfile(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleGenderSelect = useCallback((gender: string) => {
+    'background only';
+    setEditingProfile(prev => ({ ...prev, gender }));
+  }, []);
+
+  const handleActivitySelect = useCallback((activityLevel: string) => {
+    'background only';
+    setEditingProfile(prev => ({ ...prev, activityLevel }));
+  }, []);
 
   const handleCloseModal = useCallback(() => {
     'background only';
@@ -84,25 +114,20 @@ export function ProfileScreen({ onRender }: ProfileScreenProps) {
     }
   }, [logout]);
 
-  const updateEditingProfile = (field: keyof UserProfile, value: any) => {
-    setEditingProfile(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
   const bmi = calculateBMI();
   const bmr = calculateBMR();
   const recommendedCalories = calculateRecommendedCalories();
 
-  const getBMIStatus = (bmi: number) => {
-    if (bmi < 18.5) return { status: '低体重', color: 'blue' };
-    if (bmi < 25) return { status: '標準', color: 'green' };
-    if (bmi < 30) return { status: '肥満(1度)', color: 'orange' };
+  const getBMIStatus = (bmiValue: string) => {
+    const bmiNum = parseFloat(bmiValue);
+    if (isNaN(bmiNum)) return { status: '---', color: 'gray' };
+    if (bmiNum < 18.5) return { status: '低体重', color: 'blue' };
+    if (bmiNum < 25) return { status: '標準', color: 'green' };
+    if (bmiNum < 30) return { status: '肥満(1度)', color: 'orange' };
     return { status: '肥満(2度以上)', color: 'red' };
   };
 
-  const bmiStatus = getBMIStatus(parseFloat(bmi));
+  const bmiStatus = getBMIStatus(bmi);
 
   return (
     <view className="profile-screen">
@@ -110,9 +135,9 @@ export function ProfileScreen({ onRender }: ProfileScreenProps) {
       <view className="profile-section">
         <view className="profile-header">
           <view className="avatar">
-            <text className="avatar-text">{profile.name.charAt(0)}</text>
+            <text className="avatar-text">{user?.email?.charAt(0).toUpperCase() || 'U'}</text>
           </view>
-          <text className="profile-name">{profile.name}</text>
+          <text className="profile-name">{user?.email || 'ユーザー'}</text>
           <view className="edit-button" bindtap={handleEditPress}>
             <text className="edit-text">編集</text>
           </view>
@@ -125,25 +150,30 @@ export function ProfileScreen({ onRender }: ProfileScreenProps) {
           </view>
           <view className="detail-row">
             <text className="detail-label">年齢</text>
-            <text className="detail-value">{profile.age}歳</text>
+            <text className="detail-value">{userProfile?.age || '未設定'}歳</text>
           </view>
           <view className="detail-row">
             <text className="detail-label">身長</text>
-            <text className="detail-value">{profile.height}cm</text>
+            <text className="detail-value">{userProfile?.height || '未設定'}cm</text>
           </view>
           <view className="detail-row">
             <text className="detail-label">体重</text>
-            <text className="detail-value">{profile.weight}kg</text>
+            <text className="detail-value">{userProfile?.weight || '未設定'}kg</text>
           </view>
           <view className="detail-row">
             <text className="detail-label">性別</text>
-            <text className="detail-value">{profile.gender === 'male' ? '男性' : '女性'}</text>
+            <text className="detail-value">
+              {userProfile?.gender === 'male' ? '男性' : 
+               userProfile?.gender === 'female' ? '女性' : '未設定'}
+            </text>
           </view>
           <view className="detail-row">
             <text className="detail-label">活動レベル</text>
             <text className="detail-value">
-              {profile.activityLevel === 'low' ? '低い' : 
-               profile.activityLevel === 'moderate' ? '普通' : '高い'}
+              {userProfile?.activityLevel === 'sedentary' ? '低い' : 
+               userProfile?.activityLevel === 'light' ? 'やや低い' :
+               userProfile?.activityLevel === 'moderate' ? '普通' : 
+               userProfile?.activityLevel === 'active' ? '高い' : '未設定'}
             </text>
           </view>
         </view>
@@ -200,107 +230,104 @@ export function ProfileScreen({ onRender }: ProfileScreenProps) {
             <text className="modal-title">プロフィール編集</text>
             
             <view className="edit-form">
-              <view className="form-group">
-                <text className="form-label">名前</text>
-                <text 
-                  className="form-input"
-                  bindtap={() => {
-                    const newName = prompt('名前を入力してください', editingProfile.name) || editingProfile.name;
-                    updateEditingProfile('name', newName);
-                  }}
-                >
-                  {editingProfile.name}
-                </text>
-              </view>
-
-              <view className="form-group">
-                <text className="form-label">年齢</text>
-                <text 
-                  className="form-input"
-                  bindtap={() => {
-                    const newAge = prompt('年齢を入力してください', editingProfile.age.toString()) || editingProfile.age.toString();
-                    updateEditingProfile('age', parseInt(newAge) || 0);
-                  }}
-                >
-                  {editingProfile.age}
-                </text>
-              </view>
-
+              {/* 身長 */}
               <view className="form-group">
                 <text className="form-label">身長 (cm)</text>
-                <text 
-                  className="form-input"
-                  bindtap={() => {
-                    const newHeight = prompt('身長を入力してください (cm)', editingProfile.height.toString()) || editingProfile.height.toString();
-                    updateEditingProfile('height', parseInt(newHeight) || 0);
-                  }}
-                >
-                  {editingProfile.height}cm
-                </text>
+                <InputField
+                  value={editingProfile.height}
+                  placeholder="例: 170"
+                  type="text"
+                  className="profile-input"
+                  onInput={(value) => handleInputChange('height', value)}
+                />
               </view>
 
+              {/* 体重 */}
               <view className="form-group">
                 <text className="form-label">体重 (kg)</text>
-                <text 
-                  className="form-input"
-                  bindtap={() => {
-                    const newWeight = prompt('体重を入力してください (kg)', editingProfile.weight.toString()) || editingProfile.weight.toString();
-                    updateEditingProfile('weight', parseInt(newWeight) || 0);
-                  }}
-                >
-                  {editingProfile.weight}kg
-                </text>
+                <InputField
+                  value={editingProfile.weight}
+                  placeholder="例: 65"
+                  type="text"
+                  className="profile-input"
+                  onInput={(value) => handleInputChange('weight', value)}
+                />
               </view>
 
+              {/* 年齢 */}
+              <view className="form-group">
+                <text className="form-label">年齢</text>
+                <InputField
+                  value={editingProfile.age}
+                  placeholder="例: 25"
+                  type="text"
+                  className="profile-input"
+                  onInput={(value) => handleInputChange('age', value)}
+                />
+              </view>
+
+              {/* 性別 */}
               <view className="form-group">
                 <text className="form-label">性別</text>
-                <view className="radio-group">
+                <view className="gender-buttons">
                   <view 
-                    className={`radio-option ${editingProfile.gender === 'male' ? 'selected' : ''}`}
-                    bindtap={() => updateEditingProfile('gender', 'male')}
+                    className={`gender-button ${editingProfile.gender === 'male' ? 'selected' : ''}`}
+                    bindtap={() => handleGenderSelect('male')}
                   >
-                    <text className="radio-text">男性</text>
+                    <text className="gender-button-text">男性</text>
                   </view>
                   <view 
-                    className={`radio-option ${editingProfile.gender === 'female' ? 'selected' : ''}`}
-                    bindtap={() => updateEditingProfile('gender', 'female')}
+                    className={`gender-button ${editingProfile.gender === 'female' ? 'selected' : ''}`}
+                    bindtap={() => handleGenderSelect('female')}
                   >
-                    <text className="radio-text">女性</text>
+                    <text className="gender-button-text">女性</text>
                   </view>
                 </view>
               </view>
 
+              {/* 活動レベル */}
               <view className="form-group">
                 <text className="form-label">活動レベル</text>
-                <view className="radio-group vertical">
+                <view className="activity-buttons">
                   <view 
-                    className={`radio-option ${editingProfile.activityLevel === 'low' ? 'selected' : ''}`}
-                    bindtap={() => updateEditingProfile('activityLevel', 'low')}
+                    className={`activity-button ${editingProfile.activityLevel === 'sedentary' ? 'selected' : ''}`}
+                    bindtap={() => handleActivitySelect('sedentary')}
                   >
-                    <text className="radio-text">低い（デスクワーク中心）</text>
+                    <text className="activity-button-text">低い</text>
+                    <text className="activity-button-desc">デスクワーク中心</text>
                   </view>
                   <view 
-                    className={`radio-option ${editingProfile.activityLevel === 'moderate' ? 'selected' : ''}`}
-                    bindtap={() => updateEditingProfile('activityLevel', 'moderate')}
+                    className={`activity-button ${editingProfile.activityLevel === 'light' ? 'selected' : ''}`}
+                    bindtap={() => handleActivitySelect('light')}
                   >
-                    <text className="radio-text">普通（軽い運動）</text>
+                    <text className="activity-button-text">やや低い</text>
+                    <text className="activity-button-desc">軽い運動時々</text>
                   </view>
                   <view 
-                    className={`radio-option ${editingProfile.activityLevel === 'high' ? 'selected' : ''}`}
-                    bindtap={() => updateEditingProfile('activityLevel', 'high')}
+                    className={`activity-button ${editingProfile.activityLevel === 'moderate' ? 'selected' : ''}`}
+                    bindtap={() => handleActivitySelect('moderate')}
                   >
-                    <text className="radio-text">高い（激しい運動）</text>
+                    <text className="activity-button-text">普通</text>
+                    <text className="activity-button-desc">定期的な運動</text>
+                  </view>
+                  <view 
+                    className={`activity-button ${editingProfile.activityLevel === 'active' ? 'selected' : ''}`}
+                    bindtap={() => handleActivitySelect('active')}
+                  >
+                    <text className="activity-button-text">高い</text>
+                    <text className="activity-button-desc">激しい運動習慣</text>
                   </view>
                 </view>
               </view>
-            </view>
 
-            <view className="modal-buttons">
-              <view className="modal-button cancel" bindtap={handleCloseModal}>
-                <text className="modal-button-text">キャンセル</text>
-              </view>
-              <view className="modal-button confirm" bindtap={handleSaveProfile}>
-                <text className="modal-button-text">保存</text>
+              {/* ボタン */}
+              <view className="modal-buttons">
+                <view className="modal-button cancel" bindtap={handleCloseModal}>
+                  <text className="modal-button-text">キャンセル</text>
+                </view>
+                <view className="modal-button save" bindtap={handleSaveProfile}>
+                  <text className="modal-button-text">保存</text>
+                </view>
               </view>
             </view>
           </view>
