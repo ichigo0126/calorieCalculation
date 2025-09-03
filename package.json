@@ -9,8 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@lynx-js/react": "^0.112.4",
-    "@supabase/supabase-js": "^2.56.1"
+    "@lynx-js/react": "^0.112.4"
   },
   "devDependencies": {
     "@lynx-js/preact-devtools": "^5.0.1-6664329",
@@ -18,11 +17,18 @@
     "@lynx-js/react-rsbuild-plugin": "^0.10.13",
     "@lynx-js/rspeedy": "^0.10.8",
     "@lynx-js/types": "3.3.0",
+    "@rsbuild/plugin-node-polyfill": "^1.4.2",
     "@rsbuild/plugin-type-check": "1.2.4",
     "@testing-library/jest-dom": "^6.8.0",
     "@types/react": "^18.3.23",
+    "browserify-zlib": "^0.2.0",
+    "https-browserify": "^1.0.0",
     "jsdom": "^26.1.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "typescript": "~5.9.2",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
     "vitest": "^3.2.4"
   },
   "engines": {

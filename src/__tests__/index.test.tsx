@@ -37,52 +37,111 @@ test('App', async () => {
           <view
             class="Banner"
           >
-            <view
-              class="Logo"
-            >
-              <image
-                class="Logo--lynx"
-                src="/src/assets/lynx-logo.png"
-              />
-            </view>
             <text
               class="Title"
             >
-              React
-            </text>
-            <text
-              class="Subtitle"
-            >
-              on Lynx
+              カロリー計算アプリ
             </text>
           </view>
-          <view
-            class="Content"
-          >
-            <image
-              class="Arrow"
-              src="/src/assets/arrow.png"
-            />
-            <text
-              class="Description"
+          <wrapper>
+            <view
+              class="Content"
             >
-              Tap the logo and have fun!
-            </text>
-            <text
-              class="Hint"
-            >
-              Edit
               <text
-                style="font-style:italic;color:rgba(255, 255, 255, 0.85)"
+                class="Title"
               >
-                 src/App.tsx 
+                ホーム（メイン）
               </text>
-              to see updates!
-            </text>
-          </view>
+              <text
+                class="Description"
+              >
+                リアルタイム歩数・消費カロリー表示
+              </text>
+              <text
+                class="Description"
+              >
+                今日の摂取カロリー・残りカロリー
+              </text>
+              <text
+                class="Description"
+              >
+                今日のカロリー収支サマリー
+              </text>
+            </view>
+          </wrapper>
           <view
             style="flex:1"
           />
+          <wrapper>
+            <view
+              class="navigation-bar"
+            >
+              <view
+                class="nav-item nav-item--active"
+              >
+                <wrapper>
+                  <text
+                    class="nav-icon"
+                  >
+                    🏠
+                  </text>
+                  <text
+                    class="nav-label"
+                  >
+                    ホーム
+                  </text>
+                </wrapper>
+              </view>
+              <view
+                class="nav-item "
+              >
+                <wrapper>
+                  <text
+                    class="nav-icon"
+                  >
+                    🍽️
+                  </text>
+                  <text
+                    class="nav-label"
+                  >
+                    食事
+                  </text>
+                </wrapper>
+              </view>
+              <view
+                class="nav-item "
+              >
+                <wrapper>
+                  <text
+                    class="nav-icon"
+                  >
+                    📅
+                  </text>
+                  <text
+                    class="nav-label"
+                  >
+                    カレンダー
+                  </text>
+                </wrapper>
+              </view>
+              <view
+                class="nav-item "
+              >
+                <wrapper>
+                  <text
+                    class="nav-icon"
+                  >
+                    👤
+                  </text>
+                  <text
+                    class="nav-label"
+                  >
+                    プロフィール
+                  </text>
+                </wrapper>
+              </view>
+            </view>
+          </wrapper>
         </view>
       </view>
     </page>
@@ -90,13 +149,13 @@ test('App', async () => {
   const {
     findByText,
   } = getQueriesForElement(elementTree.root!)
-  const element = await findByText('Tap the logo and have fun!')
+  const element = await findByText('ホーム（メイン）')
   expect(element).toBeInTheDocument()
   expect(element).toMatchInlineSnapshot(`
     <text
-      class="Description"
+      class="Title"
     >
-      Tap the logo and have fun!
+      ホーム（メイン）
     </text>
   `)
 })

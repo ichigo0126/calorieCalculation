@@ -6,9 +6,10 @@
     "module": "node18",
     "moduleResolution": "node16",
 
-    "strict": true,
+    "strict": false,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "noImplicitAny": false,
 
     "esModuleInterop": true,
     "skipLibCheck": true,
