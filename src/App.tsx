@@ -10,23 +10,76 @@ function AppContent(props: { onRender?: () => void }) {
   const [activeTab, setActiveTab] = useState<
     "home" | "food" | "calendar" | "profile"
   >("home");
-  const [debugMessage, setDebugMessage] = useState<string>('');
+  const [debugMessage, setDebugMessage] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState("");
   const { user, signOut } = useAuth();
 
   useEffect(() => {
     console.info("Hello, ReactLynx");
+    // プロフィールデータを読み込み
+    loadProfileData();
   }, []);
   props.onRender?.();
+
+  const loadProfileData = () => {
+    try {
+      const profileData = localStorage?.getItem(`profile_${user?.email}`) || null;
+      if (profileData) {
+        const data = JSON.parse(profileData);
+        setHeight(data.height || "");
+        setWeight(data.weight || "");
+      }
+    } catch (error) {
+      console.warn("プロフィールデータの読み込みに失敗:", error);
+    }
+  };
+
+  const saveProfileData = () => {
+    try {
+      const profileData = { height, weight };
+      localStorage?.setItem(`profile_${user?.email}`, JSON.stringify(profileData));
+      setDebugMessage("プロフィールを保存しました");
+    } catch (error) {
+      console.error("プロフィールデータの保存に失敗:", error);
+      setDebugMessage("保存に失敗しました");
+    }
+  };
+
+  const handleProfileFieldEdit = (field: string) => {
+    setEditingField(field);
+    setInputValue(
+      field === 'height' ? height :
+      field === 'weight' ? weight : ''
+    );
+  };
+
+  const handleProfileSaveField = () => {
+    if (editingField === 'height') setHeight(inputValue);
+    else if (editingField === 'weight') setWeight(inputValue);
+    
+    setEditingField(null);
+    setInputValue('');
+  };
+
+  const calculateBMI = () => {
+    const h = parseFloat(height);
+    const w = parseFloat(weight);
+    if (h > 0 && w > 0) {
+      const bmi = w / Math.pow(h / 100, 2);
+      return bmi.toFixed(1);
+    }
+    return null;
+  };
 
   const handleTabChange = useCallback(
     (tab: "home" | "food" | "calendar" | "profile") => {
       setActiveTab(tab);
-      setDebugMessage(`タブ切り替え: ${tab}に移動しました`);
-      console.log(`タブ切り替え: ${tab}`);
     },
     []
   );
-
 
   const renderContent = () => {
     switch (activeTab) {
@@ -62,68 +115,234 @@ function AppContent(props: { onRender?: () => void }) {
           </view>
         );
       case "profile":
+        const bmi = calculateBMI();
         return (
           <view className="Content">
             <text className="Title">プロフィール</text>
-            
-            
             <text className="Description">ユーザー情報: {user?.email}</text>
-            <text className="Description">身長・体重設定</text>
-            <text className="Description">各種設定項目</text>
-            <view style={{ marginTop: "20px" }}>
-              {/* ログアウトボタン */}
-              <view
-                bindtap={() => {
-                  setDebugMessage('ログアウト処理開始...');
-                  console.log('ログアウトボタンがタップされました');
-                  
-                  signOut().then((result) => {
-                    console.log('ログアウト結果:', result);
-                    setDebugMessage('ログアウト完了しました');
-                  }).catch((error) => {
-                    console.error('ログアウトエラー:', error);
-                    setDebugMessage('ログアウトエラー: ' + JSON.stringify(error));
-                  });
-                }}
-                style={{
-                  padding: "15px 30px",
-                  backgroundColor: "#dc3545",
-                  color: "white",
+
+            {/* 編集中のキーボード表示 */}
+            {editingField && (
+              <view style={{ marginTop: "20px" }}>
+                {/* 入力値表示 */}
+                <view style={{
+                  padding: "20px",
+                  backgroundColor: "#f8f9fa",
                   borderRadius: "10px",
-                  textAlign: "center",
-                  marginTop: "20px",
-                  zIndex: 999,
-                  position: "relative"
-                }}
-              >
-                <text style={{ color: "white", fontSize: "18px", pointerEvents: "none" }}>🚪 ログアウト</text>
-              </view>
-              
-              {/* デバッグメッセージ表示 */}
-              {debugMessage && (
-                <view style={{ 
-                  marginTop: "10px", 
-                  padding: "10px", 
-                  backgroundColor: "#fff3cd", 
-                  border: "1px solid #ffeaa7",
-                  borderRadius: "5px" 
+                  marginBottom: "20px",
+                  textAlign: "center"
                 }}>
-                  <text style={{ fontSize: "14px", color: "#856404" }}>
-                    {debugMessage}
+                  <text style={{ fontSize: "16px", color: "#6c757d", marginBottom: "10px" }}>
+                    {editingField === 'height' ? '📏 身長' : '⚖️ 体重'}を入力中
+                  </text>
+                  <text style={{ fontSize: "32px", fontWeight: "bold", color: "#000000" }}>
+                    {inputValue || "0"} {editingField === 'height' ? 'cm' : 'kg'}
                   </text>
                 </view>
-              )}
-              
-              {/* デバッグ用：現在のユーザー状態表示 */}
-              <view style={{ marginTop: "20px", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "5px" }}>
-                <text style={{ fontSize: "12px", color: "#666", display: "block" }}>
-                  デバッグ: ユーザー={user ? 'ログイン中' : 'ログアウト中'}
-                </text>
-                <text style={{ fontSize: "12px", color: "#666", display: "block" }}>
-                  メール: {user?.email || 'なし'}
-                </text>
+
+                {/* 数値キーボード */}
+                <view style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "10px",
+                  marginBottom: "20px"
+                }}>
+                  {['1','2','3','4','5','6','7','8','9','.','0'].map(char => (
+                    <view
+                      key={char}
+                      bindtap={() => setInputValue(prev => prev + char)}
+                      style={{
+                        padding: "20px",
+                        backgroundColor: "#ffffff",
+                        borderRadius: "8px",
+                        textAlign: "center",
+                        border: "2px solid #343a40",
+                        position: "relative",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+                      }}
+                    >
+                      <text style={{ fontSize: "24px", fontWeight: "bold", color: "#000000", pointerEvents: "none" }}>{char}</text>
+                    </view>
+                  ))}
+                  <view
+                    bindtap={() => setInputValue(prev => prev.slice(0, -1))}
+                    style={{
+                      padding: "20px",
+                      backgroundColor: "#dc3545",
+                      borderRadius: "8px",
+                      textAlign: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <text style={{ fontSize: "20px", color: "white", fontWeight: "bold", pointerEvents: "none" }}>⌫</text>
+                  </view>
+                </view>
+
+                {/* 保存・キャンセルボタン */}
+                <view style={{ display: "flex", gap: "10px" }}>
+                  <view
+                    bindtap={handleProfileSaveField}
+                    style={{
+                      padding: "15px",
+                      backgroundColor: "#28a745",
+                      borderRadius: "8px",
+                      flex: 1,
+                      textAlign: "center",
+                      position: "relative",
+                      zIndex: 999
+                    }}
+                  >
+                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>✓ 保存</text>
+                  </view>
+                  <view
+                    bindtap={() => setEditingField(null)}
+                    style={{
+                      padding: "15px",
+                      backgroundColor: "#6c757d",
+                      borderRadius: "8px",
+                      flex: 1,
+                      textAlign: "center",
+                      position: "relative",
+                      zIndex: 999
+                    }}
+                  >
+                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>✕ キャンセル</text>
+                  </view>
+                </view>
               </view>
-            </view>
+            )}
+
+            {/* 通常表示 */}
+            {!editingField && (
+              <view>
+                {/* 身長・体重表示 */}
+                <view style={{ marginTop: "30px" }}>
+                  <view style={{ 
+                    padding: "20px", 
+                    backgroundColor: "#ffffff", 
+                    borderRadius: "10px",
+                    marginBottom: "15px",
+                    border: "1px solid #dee2e6"
+                  }}>
+                    <text style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>📏 身長</text>
+                    <view style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <text style={{ fontSize: "20px", color: height ? "#000" : "#6c757d" }}>
+                        {height ? `${height} cm` : "未設定"}
+                      </text>
+                      <view 
+                        bindtap={() => handleProfileFieldEdit('height')}
+                        style={{ 
+                          padding: "8px 15px", 
+                          backgroundColor: "#007bff", 
+                          borderRadius: "5px",
+                          position: "relative",
+                          zIndex: 999,
+                          marginLeft: "auto"
+                        }}
+                      >
+                        <text style={{ color: "white", fontSize: "14px", pointerEvents: "none" }}>編集</text>
+                      </view>
+                    </view>
+                  </view>
+
+                  <view style={{ 
+                    padding: "20px", 
+                    backgroundColor: "#ffffff", 
+                    borderRadius: "10px",
+                    marginBottom: "20px",
+                    border: "1px solid #dee2e6"
+                  }}>
+                    <text style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>⚖️ 体重</text>
+                    <view style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <text style={{ fontSize: "20px", color: weight ? "#000" : "#6c757d" }}>
+                        {weight ? `${weight} kg` : "未設定"}
+                      </text>
+                      <view 
+                        bindtap={() => handleProfileFieldEdit('weight')}
+                        style={{ 
+                          padding: "8px 15px", 
+                          backgroundColor: "#28a745", 
+                          borderRadius: "5px",
+                          position: "relative",
+                          zIndex: 999,
+                          marginLeft: "auto"
+                        }}
+                      >
+                        <text style={{ color: "white", fontSize: "14px", pointerEvents: "none" }}>編集</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+
+                {/* BMI表示 */}
+                {bmi && (
+                  <view style={{ 
+                    padding: "20px", 
+                    backgroundColor: "#e8f5e8", 
+                    borderRadius: "10px",
+                    marginBottom: "30px",
+                    border: "1px solid #28a745"
+                  }}>
+                    <text style={{ fontSize: "16px", fontWeight: "bold", color: "#155724", marginBottom: "10px" }}>📊 BMI</text>
+                    <text style={{ fontSize: "24px", fontWeight: "bold", color: "#155724" }}>
+                      {bmi} ({parseFloat(bmi) < 18.5 ? "やせ" : parseFloat(bmi) < 25 ? "標準" : parseFloat(bmi) < 30 ? "肥満1度" : "肥満2度以上"})
+                    </text>
+                  </view>
+                )}
+
+                {/* 操作ボタン */}
+                <view style={{ paddingBottom: "30px" }}>
+                  <view 
+                    bindtap={saveProfileData}
+                    style={{
+                      padding: "15px",
+                      backgroundColor: "#007bff",
+                      borderRadius: "8px",
+                      textAlign: "center",
+                      marginBottom: "15px",
+                      position: "relative",
+                      zIndex: 999,
+                      width: "100%"
+                    }}
+                  >
+                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>💾 保存</text>
+                  </view>
+
+                  <view
+                    bindtap={() => {
+                      setDebugMessage("ログアウト処理開始...");
+                      signOut()
+                        .then((result) => setDebugMessage("ログアウト完了しました"))
+                        .catch((error) => setDebugMessage("ログアウトエラー: " + JSON.stringify(error)));
+                    }}
+                    style={{
+                      padding: "15px",
+                      backgroundColor: "#dc3545",
+                      borderRadius: "8px",
+                      textAlign: "center",
+                      position: "relative",
+                      zIndex: 999,
+                      width: "100%"
+                    }}
+                  >
+                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>🚪 ログアウト</text>
+                  </view>
+                </view>
+              </view>
+            )}
+
+            {/* デバッグメッセージ */}
+            {debugMessage && (
+              <view style={{
+                padding: "10px",
+                backgroundColor: "#fff3cd",
+                border: "1px solid #ffeaa7",
+                borderRadius: "5px",
+                marginTop: "10px"
+              }}>
+                <text style={{ fontSize: "14px", color: "#856404" }}>{debugMessage}</text>
+              </view>
+            )}
           </view>
         );
       default:
@@ -133,10 +352,9 @@ function AppContent(props: { onRender?: () => void }) {
 
   return (
     <view>
-      <view className="Background" />
       <view className="App">
         <view className="Banner">
-          <text className="Title">カロリー計算アプリ</text>
+          <text className="AppName">カロリー計算アプリ</text>
         </view>
         {renderContent()}
         <view style={{ flex: 1 }} />
