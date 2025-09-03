@@ -3,23 +3,6 @@
   --color-text: #333;
 }
 
-.Background {
-  position: fixed;
-  background: radial-gradient(
-    71.43% 62.3% at 46.43% 36.43%,
-    rgba(18, 229, 229, 0) 15%,
-    rgba(239, 155, 255, 0.3) 56.35%,
-    #ff6448 100%
-  );
-  box-shadow: 0px 12.93px 28.74px 0px #ffd28db2 inset;
-  border-radius: 50%;
-  width: 200vw;
-  height: 200vw;
-  top: -60vw;
-  left: -14.27vw;
-  transform: rotate(15.25deg);
-}
-
 .App {
   position: relative;
   min-height: 100vh;
@@ -28,6 +11,11 @@
   align-items: center;
   justify-content: flex-start;
   padding-bottom: 80px;
+}
+
+.AppName {
+  font-size: 36px;
+  font-weight: 700;
 }
 
 text {
@@ -99,7 +87,8 @@ text {
 
 .Title {
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 700; 
+  margin-bottom: 40px;
 }
 
 .Subtitle {
@@ -112,7 +101,7 @@ text {
 .Description {
   font-size: 20px;
   color: black;
-  margin: 15rpx;
+  margin: 20rpx;
 }
 
 .Hint {
