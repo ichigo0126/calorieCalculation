@@ -26,7 +26,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
     }
 
     if (password.length < 6) {
-      setError('パスワードは6文字以上で入力してください')
+      console.log('パスワード長チェック:', { password, length: password.length, chars: password.split('') })
+      setError(`パスワードは6文字以上で入力してください（現在：${password.length}文字）`)
       setLoading(false)
       return
     }
@@ -56,7 +57,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            bindinput={(e) => setEmail(e.detail.value)}
             placeholder="メールアドレスを入力してください"
             style={{
               width: '100%',
@@ -74,7 +75,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            bindinput={(e) => setPassword(e.detail.value)}
             placeholder="パスワードを入力してください"
             style={{
               width: '100%',
@@ -92,7 +93,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
           <input
             type="password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            bindinput={(e) => setConfirmPassword(e.detail.value)}
             placeholder="パスワードを再入力してください"
             style={{
               width: '100%',

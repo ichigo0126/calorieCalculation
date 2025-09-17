@@ -43,7 +43,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            bindinput={(e) => setEmail(e.detail.value)}
             placeholder="メールアドレスを入力してください"
             style={{
               width: "100%",
@@ -61,7 +61,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            bindinput={(e) => setPassword(e.detail.value)}
             placeholder="パスワードを入力してください"
             style={{
               width: "100%",
