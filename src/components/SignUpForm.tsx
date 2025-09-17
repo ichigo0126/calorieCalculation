@@ -9,30 +9,10 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [editingField, setEditingField] = useState<string | null>(null)
-  const [inputValue, setInputValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const { signUp } = useAuth()
-
-  const handleFieldEdit = (field: string) => {
-    setEditingField(field)
-    setInputValue(
-      field === 'email' ? email :
-      field === 'password' ? password :
-      field === 'confirmPassword' ? confirmPassword : ''
-    )
-  }
-
-  const handleSaveField = () => {
-    if (editingField === 'email') setEmail(inputValue)
-    else if (editingField === 'password') setPassword(inputValue)
-    else if (editingField === 'confirmPassword') setConfirmPassword(inputValue)
-    
-    setEditingField(null)
-    setInputValue('')
-  }
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -73,164 +53,56 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
       <view style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <view>
           <text style={{ marginBottom: '0.5rem' }}>メールアドレス</text>
-          {editingField === 'email' ? (
-            <view style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <text style={{ padding: '0.5rem', border: '1px solid #007bff', borderRadius: '4px', fontSize: '0.9rem' }}>
-                {inputValue}
-              </text>
-              <view style={{ display: 'flex', gap: '0.5rem' }}>
-                <view 
-                  bindtap={handleSaveField}
-                  style={{ padding: '0.5rem', backgroundColor: '#28a745', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>保存</text>
-                </view>
-                <view 
-                  bindtap={() => setEditingField(null)}
-                  style={{ padding: '0.5rem', backgroundColor: '#6c757d', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>キャンセル</text>
-                </view>
-              </view>
-              <view style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
-                {['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','@','.','-','_','0','1','2','3','4','5','6','7','8','9'].map(char => (
-                  <view 
-                    key={char}
-                    bindtap={() => setInputValue(prev => prev + char)}
-                    style={{ padding: '0.3rem', backgroundColor: '#e9ecef', borderRadius: '3px', minWidth: '25px', textAlign: 'center' }}
-                  >
-                    <text style={{ fontSize: '0.8rem' }}>{char}</text>
-                  </view>
-                ))}
-                <view 
-                  bindtap={() => setInputValue(prev => prev.slice(0, -1))}
-                  style={{ padding: '0.3rem', backgroundColor: '#dc3545', color: 'white', borderRadius: '3px', textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white', fontSize: '0.8rem' }}>削除</text>
-                </view>
-              </view>
-            </view>
-          ) : (
-            <view>
-              <text style={{ padding: '0.75rem', backgroundColor: '#f8f9fa', borderRadius: '4px', display: 'block', marginBottom: '0.5rem' }}>
-                {email || 'メールアドレスを入力してください'}
-              </text>
-              <view 
-                bindtap={() => handleFieldEdit('email')}
-                style={{ padding: '0.5rem', backgroundColor: '#007bff', color: 'white', borderRadius: '4px', textAlign: 'center' }}
-              >
-                <text style={{ color: 'white' }}>編集</text>
-              </view>
-            </view>
-          )}
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="メールアドレスを入力してください"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              fontSize: '1rem',
+              backgroundColor: 'white',
+            }}
+          />
         </view>
         
         <view>
           <text style={{ marginBottom: '0.5rem' }}>パスワード</text>
-          {editingField === 'password' ? (
-            <view style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <text style={{ padding: '0.5rem', border: '1px solid #007bff', borderRadius: '4px', fontSize: '0.9rem' }}>
-                {'*'.repeat(inputValue.length)}
-              </text>
-              <view style={{ display: 'flex', gap: '0.5rem' }}>
-                <view 
-                  bindtap={handleSaveField}
-                  style={{ padding: '0.5rem', backgroundColor: '#28a745', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>保存</text>
-                </view>
-                <view 
-                  bindtap={() => setEditingField(null)}
-                  style={{ padding: '0.5rem', backgroundColor: '#6c757d', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>キャンセル</text>
-                </view>
-              </view>
-              <view style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
-                {['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','!','@','#','$','%'].map(char => (
-                  <view 
-                    key={char}
-                    bindtap={() => setInputValue(prev => prev + char)}
-                    style={{ padding: '0.3rem', backgroundColor: '#e9ecef', borderRadius: '3px', minWidth: '25px', textAlign: 'center' }}
-                  >
-                    <text style={{ fontSize: '0.8rem' }}>{char}</text>
-                  </view>
-                ))}
-                <view 
-                  bindtap={() => setInputValue(prev => prev.slice(0, -1))}
-                  style={{ padding: '0.3rem', backgroundColor: '#dc3545', color: 'white', borderRadius: '3px', textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white', fontSize: '0.8rem' }}>削除</text>
-                </view>
-              </view>
-            </view>
-          ) : (
-            <view>
-              <text style={{ padding: '0.75rem', backgroundColor: '#f8f9fa', borderRadius: '4px', display: 'block', marginBottom: '0.5rem' }}>
-                {password ? '*'.repeat(password.length) : 'パスワードを入力してください'}
-              </text>
-              <view 
-                bindtap={() => handleFieldEdit('password')}
-                style={{ padding: '0.5rem', backgroundColor: '#007bff', color: 'white', borderRadius: '4px', textAlign: 'center' }}
-              >
-                <text style={{ color: 'white' }}>編集</text>
-              </view>
-            </view>
-          )}
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="パスワードを入力してください"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              fontSize: '1rem',
+              backgroundColor: 'white',
+            }}
+          />
         </view>
         
         <view>
           <text style={{ marginBottom: '0.5rem' }}>パスワード確認</text>
-          {editingField === 'confirmPassword' ? (
-            <view style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <text style={{ padding: '0.5rem', border: '1px solid #007bff', borderRadius: '4px', fontSize: '0.9rem' }}>
-                {'*'.repeat(inputValue.length)}
-              </text>
-              <view style={{ display: 'flex', gap: '0.5rem' }}>
-                <view 
-                  bindtap={handleSaveField}
-                  style={{ padding: '0.5rem', backgroundColor: '#28a745', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>保存</text>
-                </view>
-                <view 
-                  bindtap={() => setEditingField(null)}
-                  style={{ padding: '0.5rem', backgroundColor: '#6c757d', color: 'white', borderRadius: '4px', flex: 1, textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white' }}>キャンセル</text>
-                </view>
-              </view>
-              <view style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
-                {['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9','!','@','#','$','%'].map(char => (
-                  <view 
-                    key={char}
-                    bindtap={() => setInputValue(prev => prev + char)}
-                    style={{ padding: '0.3rem', backgroundColor: '#e9ecef', borderRadius: '3px', minWidth: '25px', textAlign: 'center' }}
-                  >
-                    <text style={{ fontSize: '0.8rem' }}>{char}</text>
-                  </view>
-                ))}
-                <view 
-                  bindtap={() => setInputValue(prev => prev.slice(0, -1))}
-                  style={{ padding: '0.3rem', backgroundColor: '#dc3545', color: 'white', borderRadius: '3px', textAlign: 'center' }}
-                >
-                  <text style={{ color: 'white', fontSize: '0.8rem' }}>削除</text>
-                </view>
-              </view>
-            </view>
-          ) : (
-            <view>
-              <text style={{ padding: '0.75rem', backgroundColor: '#f8f9fa', borderRadius: '4px', display: 'block', marginBottom: '0.5rem' }}>
-                {confirmPassword ? '*'.repeat(confirmPassword.length) : 'パスワードを再入力してください'}
-              </text>
-              <view 
-                bindtap={() => handleFieldEdit('confirmPassword')}
-                style={{ padding: '0.5rem', backgroundColor: '#007bff', color: 'white', borderRadius: '4px', textAlign: 'center' }}
-              >
-                <text style={{ color: 'white' }}>編集</text>
-              </view>
-            </view>
-          )}
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="パスワードを再入力してください"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              fontSize: '1rem',
+              backgroundColor: 'white',
+            }}
+          />
         </view>
         {error && (
           <view style={{ 
