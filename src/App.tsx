@@ -14,7 +14,6 @@ function AppContent(props: { onRender?: () => void }) {
   const [height, setHeight] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [inputValue, setInputValue] = useState("");
   const { user, signOut } = useAuth();
 
   useEffect(() => {
@@ -50,18 +49,6 @@ function AppContent(props: { onRender?: () => void }) {
 
   const handleProfileFieldEdit = (field: string) => {
     setEditingField(field);
-    setInputValue(
-      field === 'height' ? height :
-      field === 'weight' ? weight : ''
-    );
-  };
-
-  const handleProfileSaveField = () => {
-    if (editingField === 'height') setHeight(inputValue);
-    else if (editingField === 'weight') setWeight(inputValue);
-    
-    setEditingField(null);
-    setInputValue('');
   };
 
   const calculateBMI = () => {
@@ -121,67 +108,34 @@ function AppContent(props: { onRender?: () => void }) {
             <text className="Title">プロフィール</text>
             <text className="Description">ユーザー情報: {user?.email}</text>
 
-            {/* 編集中のキーボード表示 */}
+            {/* 編集中の入力フォーム */}
             {editingField && (
-              <view style={{ marginTop: "20px" }}>
-                {/* 入力値表示 */}
-                <view style={{
-                  padding: "20px",
-                  backgroundColor: "#f8f9fa",
-                  borderRadius: "10px",
-                  marginBottom: "20px",
-                  textAlign: "center"
-                }}>
-                  <text style={{ fontSize: "16px", color: "#6c757d", marginBottom: "10px" }}>
-                    {editingField === 'height' ? '📏 身長' : '⚖️ 体重'}を入力中
-                  </text>
-                  <text style={{ fontSize: "32px", fontWeight: "bold", color: "#000000" }}>
-                    {inputValue || "0"} {editingField === 'height' ? 'cm' : 'kg'}
-                  </text>
-                </view>
-
-                {/* 数値キーボード */}
-                <view style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, 1fr)",
-                  gap: "10px",
-                  marginBottom: "20px"
-                }}>
-                  {['1','2','3','4','5','6','7','8','9','.','0'].map(char => (
-                    <view
-                      key={char}
-                      bindtap={() => setInputValue(prev => prev + char)}
-                      style={{
-                        padding: "20px",
-                        backgroundColor: "#ffffff",
-                        borderRadius: "8px",
-                        textAlign: "center",
-                        border: "2px solid #343a40",
-                        position: "relative",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-                      }}
-                    >
-                      <text style={{ fontSize: "24px", fontWeight: "bold", color: "#000000", pointerEvents: "none" }}>{char}</text>
-                    </view>
-                  ))}
-                  <view
-                    bindtap={() => setInputValue(prev => prev.slice(0, -1))}
-                    style={{
-                      padding: "20px",
-                      backgroundColor: "#dc3545",
-                      borderRadius: "8px",
-                      textAlign: "center",
-                      position: "relative",
-                    }}
-                  >
-                    <text style={{ fontSize: "20px", color: "white", fontWeight: "bold", pointerEvents: "none" }}>⌫</text>
-                  </view>
-                </view>
-
-                {/* 保存・キャンセルボタン */}
+              <view style={{ marginTop: "20px", marginBottom: "20px" }}>
+                <text style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "10px" }}>
+                  {editingField === 'height' ? '📏 身長' : '⚖️ 体重'}を入力
+                </text>
+                <input
+                  type="number"
+                  value={editingField === 'height' ? height : weight}
+                  bindinput={(e) => {
+                    const value = e.detail.value;
+                    if (editingField === 'height') setHeight(value);
+                    else if (editingField === 'weight') setWeight(value);
+                  }}
+                  placeholder={editingField === 'height' ? '身長を入力 (cm)' : '体重を入力 (kg)'}
+                  style={{
+                    width: "100%",
+                    padding: "15px",
+                    border: "2px solid #007bff",
+                    borderRadius: "8px",
+                    fontSize: "18px",
+                    backgroundColor: "white",
+                    marginBottom: "15px",
+                  }}
+                />
                 <view style={{ display: "flex", gap: "10px" }}>
                   <view
-                    bindtap={handleProfileSaveField}
+                    bindtap={() => setEditingField(null)}
                     style={{
                       padding: "15px",
                       backgroundColor: "#28a745",
@@ -192,7 +146,7 @@ function AppContent(props: { onRender?: () => void }) {
                       zIndex: 999
                     }}
                   >
-                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>✓ 保存</text>
+                    <text style={{ color: "white", fontSize: "16px", fontWeight: "bold", pointerEvents: "none" }}>✓ 完了</text>
                   </view>
                   <view
                     bindtap={() => setEditingField(null)}
