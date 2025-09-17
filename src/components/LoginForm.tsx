@@ -30,7 +30,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
   };
 
   return (
-    <view style={{ maxWidth: "400px", margin: "0 auto", padding: "2rem" }}>
+    <view style={{ maxWidth: "400px", margin: "0 20", padding: "2rem" }}>
       <text
         className="Title"
         style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}

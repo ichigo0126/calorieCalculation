@@ -48,7 +48,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
   }
 
   return (
-    <view style={{ maxWidth: '400px', margin: '0 auto', padding: '2rem' }}>
+    <view style={{ maxWidth: '400px', margin: '0 20', padding: '2rem' }}>
       <text className='Title' style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>サインアップ</text>
       <view style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <view>
