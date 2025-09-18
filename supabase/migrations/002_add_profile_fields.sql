@@ -58,6 +58,14 @@ BEGIN
   ) THEN
     ALTER TABLE profiles ADD COLUMN created_at TIMESTAMPTZ DEFAULT NOW();
   END IF;
+
+  -- daily_calorie_goalカラムを追加（存在しない場合）
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'profiles' AND column_name = 'daily_calorie_goal'
+  ) THEN
+    ALTER TABLE profiles ADD COLUMN daily_calorie_goal INTEGER DEFAULT 2000 CHECK (daily_calorie_goal > 0);
+  END IF;
 END $$;
 
 -- updated_atを自動更新するトリガー関数を作成

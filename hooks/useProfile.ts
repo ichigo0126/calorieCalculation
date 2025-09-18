@@ -5,12 +5,12 @@ import { useAuth } from '@/hooks/useAuth'
 export interface UserProfile {
   id: string
   email: string
-  name?: string
-  height?: number  // cm
-  weight?: number  // kg
-  gender?: 'male' | 'female' | 'other'
-  birth_date?: string
-  daily_calorie_goal?: number
+  name?: string | null
+  height?: number | null  // cm
+  weight?: number | null  // kg
+  gender?: 'male' | 'female' | 'other' | null
+  birth_date?: string | null
+  daily_calorie_goal?: number | null
   created_at: string
   updated_at: string
 }
