@@ -1,0 +1,151 @@
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/hooks/useAuth'
+
+export interface UserProfile {
+  id: string
+  email: string
+  name?: string
+  height?: number  // cm
+  weight?: number  // kg
+  gender?: 'male' | 'female' | 'other'
+  birth_date?: string
+  daily_calorie_goal?: number
+  created_at: string
+  updated_at: string
+}
+
+export const useProfile = () => {
+  const { user } = useAuth()
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // プロフィール取得
+  const fetchProfile = async () => {
+    if (!user) return
+
+    try {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+
+      if (error && error.code !== 'PGRST116') { // レコードが見つからない場合のエラーコード
+        console.error('プロフィール取得エラー:', error)
+        return
+      }
+
+      if (data) {
+        setProfile(data)
+      } else {
+        // プロフィールが存在しない場合は作成
+        await createProfile()
+      }
+    } catch (error) {
+      console.error('プロフィール取得エラー:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // プロフィール作成
+  const createProfile = async () => {
+    if (!user) return
+
+    try {
+      const newProfile = {
+        id: user.id,
+        email: user.email || '',
+        daily_calorie_goal: 2000,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert([newProfile])
+        .select()
+        .single()
+
+      if (error) {
+        console.error('プロフィール作成エラー:', error)
+        return
+      }
+
+      setProfile(data)
+    } catch (error) {
+      console.error('プロフィール作成エラー:', error)
+    }
+  }
+
+  // プロフィール更新
+  const updateProfile = async (updates: Partial<UserProfile>) => {
+    if (!user || !profile) return { success: false, error: 'プロフィールが見つかりません' }
+
+    try {
+      const updatedData = {
+        ...updates,
+        updated_at: new Date().toISOString(),
+      }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(updatedData)
+        .eq('id', user.id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('プロフィール更新エラー:', error)
+        return { success: false, error: error.message }
+      }
+
+      setProfile(data)
+      return { success: true, data }
+    } catch (error) {
+      console.error('プロフィール更新エラー:', error)
+      return { success: false, error: 'プロフィールの更新に失敗しました' }
+    }
+  }
+
+  // BMI計算
+  const calculateBMI = () => {
+    if (!profile?.height || !profile?.weight) return null
+    const heightInMeters = profile.height / 100
+    return Number((profile.weight / (heightInMeters * heightInMeters)).toFixed(1))
+  }
+
+  // 基礎代謝計算（Harris-Benedict式）
+  const calculateBMR = () => {
+    if (!profile?.height || !profile?.weight || !profile?.gender) return null
+
+    let bmr: number
+    if (profile.gender === 'male') {
+      bmr = 88.362 + (13.397 * profile.weight) + (4.799 * profile.height) - (5.677 * 30) // 年齢30歳と仮定
+    } else {
+      bmr = 447.593 + (9.247 * profile.weight) + (3.098 * profile.height) - (4.330 * 30) // 年齢30歳と仮定
+    }
+
+    return Math.round(bmr)
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchProfile()
+    } else {
+      setProfile(null)
+      setLoading(false)
+    }
+  }, [user])
+
+  return {
+    profile,
+    loading,
+    updateProfile,
+    fetchProfile,
+    calculateBMI,
+    calculateBMR,
+  }
+}
