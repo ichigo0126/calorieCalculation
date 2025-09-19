@@ -11,6 +11,8 @@ export interface UserProfile {
   weight?: number | null  // kg
   gender?: 'male' | 'female' | 'other' | null
   birth_date?: string | null
+  age?: number | null  // 年齢
+  activity_level?: number | null  // 活動レベル係数
   daily_calorie_goal?: number | null
   created_at: string
   updated_at: string
@@ -39,8 +41,10 @@ export const useProfile = () => {
       }
 
       if (data) {
+        console.log('取得したプロフィールデータ:', data)
         setProfile(data)
       } else {
+        console.log('プロフィールが存在しないため作成します')
         // プロフィールが存在しない場合は作成
         await createProfile()
       }
@@ -91,6 +95,8 @@ export const useProfile = () => {
         updated_at: new Date().toISOString(),
       }
 
+      console.log('プロフィール更新データ:', updatedData)
+
       const { data, error } = await supabase
         .from('profiles')
         .update(updatedData)
@@ -103,6 +109,7 @@ export const useProfile = () => {
         return { success: false, error: error.message }
       }
 
+      console.log('更新後のプロフィールデータ:', data)
       setProfile(data)
       // プロフィール更新イベントを発行
       eventEmitter.emit(EVENTS.PROFILE_UPDATED, data)

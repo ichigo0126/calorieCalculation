@@ -67,13 +67,22 @@ export const useTodayMeals = () => {
 
   // 目標カロリーを計算（BMR × 活動レベル）
   const calculateGoalCalories = (): number => {
-    console.log('目標カロリー計算 - プロフィール:', {
+    console.log('目標カロリー計算 - プロフィール全体:', profile)
+    console.log('目標カロリー計算 - プロフィール詳細:', {
       height: profile?.height,
       weight: profile?.weight,
       gender: profile?.gender,
-      age: profile?.age
+      age: profile?.age,
+      daily_calorie_goal: profile?.daily_calorie_goal
     })
 
+    // プロフィール情報が設定されている場合は、その目標カロリーを使用
+    if (profile?.daily_calorie_goal && profile.daily_calorie_goal > 0) {
+      console.log('プロフィールの目標カロリーを使用:', profile.daily_calorie_goal)
+      return profile.daily_calorie_goal
+    }
+
+    // プロフィール情報がない場合はBMRから計算
     const bmr = calculateBMR()
     console.log('計算されたBMR:', bmr)
 
@@ -81,7 +90,7 @@ export const useTodayMeals = () => {
     const activityLevel = profile?.activity_level || 1.5
     const goalCalories = Math.round(bmr * activityLevel)
 
-    console.log('最終目標カロリー:', goalCalories)
+    console.log('BMRベース目標カロリー:', goalCalories)
     return goalCalories
   }
 

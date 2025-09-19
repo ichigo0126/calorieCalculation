@@ -22,7 +22,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACTIVITY_RECOGNITION",
+        "BODY_SENSORS"
+      ]
     },
     "web": {
       "bundler": "metro",
