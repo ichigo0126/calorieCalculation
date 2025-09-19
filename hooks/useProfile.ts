@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
+import { eventEmitter, EVENTS } from '@/utils/eventEmitter'
 
 export interface UserProfile {
   id: string
@@ -103,6 +104,9 @@ export const useProfile = () => {
       }
 
       setProfile(data)
+      // プロフィール更新イベントを発行
+      eventEmitter.emit(EVENTS.PROFILE_UPDATED, data)
+      console.log('プロフィール更新イベント発行:', data)
       return { success: true, data }
     } catch (error) {
       console.error('プロフィール更新エラー:', error)

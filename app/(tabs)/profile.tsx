@@ -9,8 +9,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
+  ActionSheetIOS,
 } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 
@@ -94,6 +94,37 @@ export default function ProfileScreen() {
       })
     }
     setIsEditing(false)
+  }
+
+  const handleGenderSelect = () => {
+    const options = ['キャンセル', '男性', '女性', '選択なし']
+    const genderValues: ('male' | 'female' | 'other')[] = ['other', 'male', 'female', 'other']
+
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options,
+          cancelButtonIndex: 0,
+          title: '性別を選択してください',
+        },
+        (buttonIndex) => {
+          if (buttonIndex !== 0) {
+            setFormData({ ...formData, gender: genderValues[buttonIndex] })
+          }
+        }
+      )
+    } else {
+      Alert.alert(
+        '性別を選択してください',
+        '',
+        [
+          { text: 'キャンセル', style: 'cancel' },
+          { text: '男性', onPress: () => setFormData({ ...formData, gender: 'male' }) },
+          { text: '女性', onPress: () => setFormData({ ...formData, gender: 'female' }) },
+          { text: '選択なし', onPress: () => setFormData({ ...formData, gender: 'other' }) },
+        ]
+      )
+    }
   }
 
   const handleSignOut = async () => {
@@ -190,18 +221,13 @@ export default function ProfileScreen() {
         <View style={styles.infoContainer}>
           <Text style={styles.label}>性別</Text>
           {isEditing ? (
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={formData.gender}
-                onValueChange={(value) => setFormData({ ...formData, gender: value })}
-                style={styles.picker}
-                itemStyle={styles.pickerItem}
-              >
-                <Picker.Item label="選択してください" value="other" />
-                <Picker.Item label="男性" value="male" />
-                <Picker.Item label="女性" value="female" />
-              </Picker>
-            </View>
+            <TouchableOpacity style={styles.genderSelector} onPress={handleGenderSelect}>
+              <Text style={styles.genderSelectorText}>
+                {formData.gender === 'male' ? '男性' :
+                 formData.gender === 'female' ? '女性' : '選択してください'}
+              </Text>
+              <Text style={styles.genderSelectorArrow}>▼</Text>
+            </TouchableOpacity>
           ) : (
             <Text style={styles.value}>
               {profile?.gender === 'male' ? '男性' :
@@ -425,38 +451,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7fafc',
     marginTop: 4,
   },
-  pickerContainer: {
+  genderSelector: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 40,
     borderColor: '#e2e8f0',
     borderWidth: 1,
     borderRadius: 6,
+    paddingHorizontal: 12,
     backgroundColor: '#f7fafc',
     marginTop: 4,
-    minHeight: 48,
-    justifyContent: 'center',
   },
-  picker: {
-    height: 52,
-    ...Platform.select({
-      ios: {
-        marginVertical: -8,
-      },
-      android: {
-        marginVertical: -8,
-      },
-    }),
-  },
-  pickerItem: {
+  genderSelectorText: {
     fontSize: 16,
-    height: 48,
-    textAlign: 'center',
-    ...Platform.select({
-      ios: {
-        height: 48,
-      },
-      android: {
-        textAlignVertical: 'center',
-      },
-    }),
+    color: '#2d3748',
+    flex: 1,
+  },
+  genderSelectorArrow: {
+    fontSize: 12,
+    color: '#718096',
   },
   saveButton: {
     backgroundColor: '#4299e1',
