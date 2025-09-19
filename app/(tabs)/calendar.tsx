@@ -222,39 +222,31 @@ export default function CalendarScreen() {
             <Text style={styles.loadingText}>読み込み中...</Text>
           </View>
         ) : meals.length > 0 ? (
-          meals.map((meal) => (
-            <View key={meal.id} style={styles.mealCard}>
-              <View style={styles.mealHeader}>
-                <View style={[
-                  styles.mealTypeBadge,
-                  { backgroundColor: getMealTypeColor(meal.meal_type) }
-                ]}>
-                  <Text style={styles.mealTypeText}>
-                    {getMealTypeName(meal.meal_type)}
-                  </Text>
+          <View style={styles.debugContainer}>
+            <Text style={styles.debugText}>食事データ数: {meals.length}件</Text>
+            {meals.map((meal, index) => {
+              // より詳細なデバッグ情報
+              console.log(`Meal ${index}:`, meal)
+              console.log(`Meal ${index} keys:`, Object.keys(meal))
+              console.log(`Meal ${index} values:`, Object.values(meal))
+
+              return (
+                <View key={index} style={{ marginBottom: 16, borderWidth: 1, borderColor: '#ddd', padding: 8 }}>
+                  <Text style={styles.debugText}>===== 食事 {index + 1} =====</Text>
+                  <Text style={styles.debugText}>型: {typeof meal}</Text>
+                  <Text style={styles.debugText}>ID: {meal?.id ? String(meal.id) : 'なし'}</Text>
+                  <Text style={styles.debugText}>名前: {meal?.name ? String(meal.name) : 'なし'}</Text>
+                  <Text style={styles.debugText}>カロリー: {meal?.calories ? String(meal.calories) : 'なし'}</Text>
+                  <Text style={styles.debugText}>タンパク質: {meal?.protein ? String(meal.protein) : 'なし'}</Text>
+                  <Text style={styles.debugText}>炭水化物: {meal?.carbs ? String(meal.carbs) : 'なし'}</Text>
+                  <Text style={styles.debugText}>脂質: {meal?.fat ? String(meal.fat) : 'なし'}</Text>
+                  <Text style={styles.debugText}>時間: {meal?.meal_time ? String(meal.meal_time) : 'なし'}</Text>
+                  <Text style={styles.debugText}>タイプ: {meal?.meal_type ? String(meal.meal_type) : 'なし'}</Text>
+                  <Text style={styles.debugText}>全フィールド数: {meal ? Object.keys(meal).length : 0}</Text>
                 </View>
-                <Text style={styles.mealTime}>
-                  {new Date(meal.meal_time).toLocaleTimeString('ja-JP', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </Text>
-              </View>
-              <Text style={styles.mealName}>{meal.name}</Text>
-              <View style={styles.nutritionRow}>
-                <Text style={styles.calories}>{meal.calories} kcal</Text>
-                {meal.protein && (
-                  <Text style={styles.nutrition}>P: {meal.protein}g</Text>
-                )}
-                {meal.carbs && (
-                  <Text style={styles.nutrition}>C: {meal.carbs}g</Text>
-                )}
-                {meal.fat && (
-                  <Text style={styles.nutrition}>F: {meal.fat}g</Text>
-                )}
-              </View>
-            </View>
-          ))
+              )
+            })}
+          </View>
         ) : (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>この日の食事記録はありません</Text>
@@ -435,5 +427,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#a0aec0',
     textAlign: 'center',
+  },
+  debugContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  debugText: {
+    fontSize: 12,
+    color: '#2d3748',
+    marginBottom: 8,
+    fontFamily: 'monospace',
   },
 })

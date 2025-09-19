@@ -11,13 +11,17 @@ import { FontAwesome } from '@expo/vector-icons'
 import { router, useFocusEffect } from 'expo-router'
 import { useTodayMeals } from '@/hooks/useTodayMeals'
 import { useProfile } from '@/hooks/useProfile'
+import { useActivityTracker } from '@/hooks/useActivityTracker'
 import { CalorieBalanceSummary } from '@/components/CalorieBalanceSummary'
 
 export default function HomeScreen() {
-  const { stats, loading, getRecentMeals, getMealTypeStats, fetchTodayMeals } = useTodayMeals()
+  const { stats, loading: mealsLoading, getRecentMeals, getMealTypeStats, fetchTodayMeals } = useTodayMeals()
   const { profile } = useProfile()
+  const { activityData, loading: activityLoading } = useActivityTracker()
   const recentMeals = getRecentMeals()
   const mealTypeStats = getMealTypeStats()
+
+  const loading = mealsLoading || activityLoading
 
   // 画面にフォーカスが戻ったときにデータを更新（バックグラウンド）
   useFocusEffect(
@@ -71,120 +75,75 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* 今日のカロリー概要 */}
+      {/* 今日の活動・消費カロリー概要 */}
       <View style={styles.calorieCard}>
-        <Text style={styles.cardTitle}>今日のカロリー</Text>
-        <View style={styles.calorieProgress}>
-          <View style={styles.calorieNumbers}>
-            <Text style={styles.currentCalories}>{stats.totalCalories}</Text>
-            <Text style={styles.goalCalories}>/ {stats.goalCalories} kcal</Text>
-          </View>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBackground}>
-              <View
-                style={[
-                  styles.progressBar,
-                  {
-                    width: `${Math.min(100, stats.progressPercentage)}%`,
-                    backgroundColor: getProgressColor(stats.progressPercentage)
-                  }
-                ]}
-              />
+        <Text style={styles.cardTitle}>今日の活動</Text>
+        {activityData.isAvailable ? (
+          <>
+            <View style={styles.activityMainDisplay}>
+              <View style={styles.mainActivityItem}>
+                <FontAwesome name="street-view" size={24} color="#4299e1" />
+                <Text style={styles.activityMainValue}>{activityData.steps.toLocaleString()}</Text>
+                <Text style={styles.activityMainLabel}>歩</Text>
+              </View>
+              <View style={styles.mainActivityItem}>
+                <FontAwesome name="fire" size={24} color="#e53e3e" />
+                <Text style={styles.activityMainValue}>{activityData.caloriesBurned}</Text>
+                <Text style={styles.activityMainLabel}>kcal消費</Text>
+              </View>
             </View>
-            <Text style={[styles.progressText, { color: getProgressColor(stats.progressPercentage) }]}>
-              {stats.progressPercentage.toFixed(0)}%
-            </Text>
+            <View style={styles.activitySubDisplay}>
+              <View style={styles.subActivityItem}>
+                <Text style={styles.subActivityValue}>{activityData.distance.toFixed(2)} km</Text>
+                <Text style={styles.subActivityLabel}>移動距離</Text>
+              </View>
+              <View style={styles.subActivityItem}>
+                <Text style={styles.subActivityValue}>{activityData.activeMinutes} 分</Text>
+                <Text style={styles.subActivityLabel}>活動時間</Text>
+              </View>
+            </View>
+            <View style={styles.remainingCalories}>
+              <Text style={styles.remainingText}>
+                食べられるカロリー: {activityData.remainingCalories} kcal
+              </Text>
+            </View>
+          </>
+        ) : (
+          <View style={styles.unavailableContainer}>
+            <FontAwesome name="exclamation-triangle" size={24} color="#e53e3e" />
+            <Text style={styles.unavailableText}>歩数計が利用できません</Text>
           </View>
-        </View>
-        <View style={styles.remainingCalories}>
-          <Text style={styles.remainingText}>
-            残り {stats.remainingCalories} kcal
-          </Text>
-        </View>
+        )}
       </View>
 
-      {/* 栄養素カード */}
+      {/* 摂取カロリー概要 */}
       <View style={styles.nutritionCard}>
-        <Text style={styles.cardTitle}>今日の栄養素</Text>
-        <View style={styles.nutritionRow}>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.nutritionValue}>{stats.totalProtein.toFixed(1)}g</Text>
-            <Text style={styles.nutritionLabel}>タンパク質</Text>
+        <Text style={styles.cardTitle}>今日の摂取カロリー</Text>
+        <View style={styles.calorieIntakeRow}>
+          <View style={styles.intakeItem}>
+            <Text style={styles.intakeValue}>{stats.totalCalories}</Text>
+            <Text style={styles.intakeLabel}>摂取カロリー</Text>
           </View>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.nutritionValue}>{stats.totalCarbs.toFixed(1)}g</Text>
-            <Text style={styles.nutritionLabel}>炭水化物</Text>
+          <View style={styles.intakeItem}>
+            <Text style={styles.intakeValue}>{stats.mealCount}</Text>
+            <Text style={styles.intakeLabel}>食事回数</Text>
           </View>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.nutritionValue}>{stats.totalFat.toFixed(1)}g</Text>
-            <Text style={styles.nutritionLabel}>脂質</Text>
+          <View style={styles.intakeItem}>
+            <Text style={styles.intakeValue}>{stats.goalCalories}</Text>
+            <Text style={styles.intakeLabel}>目標カロリー</Text>
           </View>
         </View>
+        <TouchableOpacity
+          style={styles.mealManagementButton}
+          onPress={() => router.push('/(tabs)/two')}
+        >
+          <Text style={styles.mealManagementText}>食事管理へ</Text>
+          <FontAwesome name="arrow-right" size={16} color="#4299e1" />
+        </TouchableOpacity>
       </View>
 
       {/* 活動・カロリー収支サマリー */}
       <CalorieBalanceSummary />
-
-      {/* 食事タイプ別統計 */}
-      <View style={styles.mealTypesCard}>
-        <Text style={styles.cardTitle}>食事別カロリー</Text>
-        <View style={styles.mealTypesGrid}>
-          {Object.entries(mealTypeStats).map(([type, data]) => (
-            <View key={type} style={styles.mealTypeItem}>
-              <FontAwesome
-                name={getMealTypeIcon(type)}
-                size={20}
-                color="#4299e1"
-                style={styles.mealTypeIcon}
-              />
-              <Text style={styles.mealTypeName}>
-                {type === 'breakfast' ? '朝食' :
-                 type === 'lunch' ? '昼食' :
-                 type === 'dinner' ? '夕食' : '間食'}
-              </Text>
-              <Text style={styles.mealTypeCalories}>{data.calories} kcal</Text>
-              <Text style={styles.mealTypeCount}>{data.count}回</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      {/* 最近の食事 */}
-      <View style={styles.recentMealsCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>最近の食事</Text>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/two')}>
-            <Text style={styles.seeAllText}>すべて見る</Text>
-          </TouchableOpacity>
-        </View>
-        {recentMeals.length > 0 ? (
-          recentMeals.map((meal) => (
-            <View key={meal.id} style={styles.mealItem}>
-              <View style={styles.mealInfo}>
-                <Text style={styles.mealName}>{meal.name}</Text>
-                <Text style={styles.mealTime}>
-                  {new Date(meal.meal_time).toLocaleTimeString('ja-JP', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </Text>
-              </View>
-              <Text style={styles.mealCalories}>{meal.calories} kcal</Text>
-            </View>
-          ))
-        ) : (
-          <View style={styles.emptyState}>
-            <FontAwesome name="cutlery" size={32} color="#a0aec0" />
-            <Text style={styles.emptyText}>まだ食事記録がありません</Text>
-            <TouchableOpacity
-              style={styles.addMealButton}
-              onPress={() => router.push('/(tabs)/two')}
-            >
-              <Text style={styles.addMealButtonText}>食事を記録する</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
 
     </ScrollView>
   )
@@ -459,5 +418,91 @@ const styles = StyleSheet.create({
     color: '#2d3748',
     marginTop: 8,
     fontWeight: '500',
+  },
+  // 新しい活動表示用スタイル
+  activityMainDisplay: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+  },
+  mainActivityItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  activityMainValue: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#2d3748',
+    marginTop: 8,
+  },
+  activityMainLabel: {
+    fontSize: 14,
+    color: '#718096',
+    marginTop: 4,
+  },
+  activitySubDisplay: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+    backgroundColor: '#f7fafc',
+    borderRadius: 8,
+    padding: 12,
+  },
+  subActivityItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  subActivityValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#4a5568',
+  },
+  subActivityLabel: {
+    fontSize: 12,
+    color: '#718096',
+    marginTop: 2,
+  },
+  unavailableContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  unavailableText: {
+    fontSize: 14,
+    color: '#718096',
+    marginTop: 8,
+  },
+  // 摂取カロリー表示用スタイル
+  calorieIntakeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+  },
+  intakeItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  intakeValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#e53e3e',
+  },
+  intakeLabel: {
+    fontSize: 12,
+    color: '#718096',
+    marginTop: 4,
+  },
+  mealManagementButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#edf2f7',
+    borderRadius: 8,
+    padding: 12,
+    gap: 8,
+  },
+  mealManagementText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4299e1',
   },
 });

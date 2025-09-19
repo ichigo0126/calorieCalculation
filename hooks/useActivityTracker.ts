@@ -444,12 +444,13 @@ export const useActivityTracker = () => {
       return 1500 // デフォルト値
     }
 
+    const age = profile.age || 30 // 年齢が未設定の場合は30歳と仮定
     // Harris-Benedict式
     let bmr: number
     if (profile.gender === 'male') {
-      bmr = 88.362 + (13.397 * profile.weight) + (4.799 * profile.height) - (5.677 * 30)
+      bmr = 88.362 + (13.397 * profile.weight) + (4.799 * profile.height) - (5.677 * age)
     } else {
-      bmr = 447.593 + (9.247 * profile.weight) + (3.098 * profile.height) - (4.330 * 30)
+      bmr = 447.593 + (9.247 * profile.weight) + (3.098 * profile.height) - (4.330 * age)
     }
 
     return Math.round(bmr)

@@ -23,6 +23,7 @@ export default function ProfileScreen() {
     name: '',
     height: '',
     weight: '',
+    age: '',
     gender: 'other' as 'male' | 'female' | 'other',
     daily_calorie_goal: '2000',
   })
@@ -33,6 +34,7 @@ export default function ProfileScreen() {
         name: profile.name || '',
         height: profile.height ? profile.height.toString() : '',
         weight: profile.weight ? profile.weight.toString() : '',
+        age: profile.age ? profile.age.toString() : '',
         gender: profile.gender || 'other',
         daily_calorie_goal: profile.daily_calorie_goal ? profile.daily_calorie_goal.toString() : '2000',
       })
@@ -51,6 +53,11 @@ export default function ProfileScreen() {
       return
     }
 
+    if (formData.age && (isNaN(Number(formData.age)) || Number(formData.age) < 10 || Number(formData.age) > 120)) {
+      Alert.alert('エラー', '年齢は10-120歳の範囲で入力してください')
+      return
+    }
+
     if (formData.daily_calorie_goal && (isNaN(Number(formData.daily_calorie_goal)) || Number(formData.daily_calorie_goal) < 800 || Number(formData.daily_calorie_goal) > 5000)) {
       Alert.alert('エラー', '目標カロリーは800-5000kcalの範囲で入力してください')
       return
@@ -63,6 +70,7 @@ export default function ProfileScreen() {
         name: formData.name || undefined,
         height: formData.height ? Number(formData.height) : undefined,
         weight: formData.weight ? Number(formData.weight) : undefined,
+        age: formData.age ? Number(formData.age) : undefined,
         gender: formData.gender as 'male' | 'female' | 'other' | undefined,
         daily_calorie_goal: formData.daily_calorie_goal ? Number(formData.daily_calorie_goal) : 2000,
       }
@@ -89,6 +97,7 @@ export default function ProfileScreen() {
         name: profile.name || '',
         height: profile.height ? profile.height.toString() : '',
         weight: profile.weight ? profile.weight.toString() : '',
+        age: profile.age ? profile.age.toString() : '',
         gender: profile.gender || 'other',
         daily_calorie_goal: profile.daily_calorie_goal ? profile.daily_calorie_goal.toString() : '2000',
       })
@@ -212,6 +221,20 @@ export default function ProfileScreen() {
             />
           ) : (
             <Text style={styles.value}>{profile?.name || '未設定'}</Text>
+          )}
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>年齢</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={formData.age}
+              onChangeText={(text) => setFormData({ ...formData, age: text })}
+              placeholder="30"
+              keyboardType="numeric"
+            />
+          ) : (
+            <Text style={styles.value}>{profile?.age ? `${profile.age} 歳` : '未設定'}</Text>
           )}
         </View>
         <View style={styles.infoContainer}>
