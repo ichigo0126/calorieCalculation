@@ -34,6 +34,12 @@ export const useActivityTracker = () => {
     try {
       console.log('Android権限要求開始')
 
+      // PermissionsAndroidが利用可能かチェック
+      if (!PermissionsAndroid) {
+        console.log('PermissionsAndroidが利用できません')
+        return false
+      }
+
       // タイムアウト付きで権限要求
       const timeoutPromise = new Promise<string>((_, reject) => {
         setTimeout(() => reject(new Error('Permission request timeout')), 10000) // 10秒タイムアウト
@@ -75,7 +81,7 @@ export const useActivityTracker = () => {
 
     // 修正された計算式: 歩数 × 体重(kg) × 0.0004
     // 1000歩で約30-40kcal消費となるよう調整
-    return Math.round(steps * weight * 4)
+    return Math.round(steps * weight * 0.0004)
   }
 
   // アクティブ時間を推定（歩数から）
@@ -222,38 +228,29 @@ export const useActivityTracker = () => {
       if (!isAvailable) {
         console.log('歩数計が利用できません')
 
-        // 開発環境の場合、モックデータを使用
-        if (__DEV__) {
-          console.log('開発環境のため、モックデータを使用します')
-          const mockSteps = 3000 + Math.floor(Math.random() * 2000) // 3000-5000歩のランダム値
-          const mockDistance = calculateDistance(mockSteps)
-          const mockCaloriesBurned = calculateCaloriesBurned(mockSteps)
-          const mockActiveMinutes = calculateActiveMinutes(mockSteps)
+        // 歩数計が利用できない場合はデフォルト値を設定
+        console.log('デフォルト値を設定します')
+        const defaultSteps = 0
+        const defaultDistance = calculateDistance(defaultSteps)
+        const defaultCaloriesBurned = calculateCaloriesBurned(defaultSteps)
+        const defaultActiveMinutes = calculateActiveMinutes(defaultSteps)
 
-          setActivityData({
-            steps: mockSteps,
-            distance: mockDistance,
-            caloriesBurned: mockCaloriesBurned,
-            remainingCalories: mockCaloriesBurned,
-            activeMinutes: mockActiveMinutes,
-            isAvailable: true, // モックデータとして利用可能扱い
-            lastUpdated: new Date(),
-          })
+        setActivityData({
+          steps: defaultSteps,
+          distance: defaultDistance,
+          caloriesBurned: defaultCaloriesBurned,
+          remainingCalories: defaultCaloriesBurned,
+          activeMinutes: defaultActiveMinutes,
+          isAvailable: false, // 利用不可として設定
+          lastUpdated: new Date(),
+        })
 
-          console.log('モックデータ設定完了:', {
-            steps: mockSteps,
-            distance: mockDistance,
-            caloriesBurned: mockCaloriesBurned
-          })
+        console.log('デフォルト値設定完了:', {
+          steps: defaultSteps,
+          distance: defaultDistance,
+          caloriesBurned: defaultCaloriesBurned
+        })
 
-          if (showLoading) {
-            console.log('モックデータ - ローディング終了')
-            setLoading(false)
-          }
-          return
-        }
-
-        setActivityData(prev => ({ ...prev, isAvailable: false, lastUpdated: new Date() }))
         if (showLoading) {
           console.log('歩数計利用不可 - ローディング終了')
           setLoading(false)
