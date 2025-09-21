@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "calorieCalculation",
-    "slug": "calorieCalculation",
+    "name": "カロリー管理アプリ",
+    "slug": "calorie-calculation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,9 +14,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "bundleIdentifier": "com.sakamaki21010404.caloriecalculation",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.sakamaki21010404.caloriecalculation",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -39,6 +41,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4a024c0d-4da5-42ad-8bf6-531320499636"
+      }
+    },
+    "owner": "sakamaki-21010404"
   }
 }
