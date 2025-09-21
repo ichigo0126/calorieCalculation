@@ -171,6 +171,7 @@ export const useActivityTracker = () => {
   // Android用: 今日の歩数をAsyncStorageに保存
   const saveTodayStepsToStorage = async (steps: number): Promise<void> => {
     const today = new Date().toDateString()
+    
     const key = `android_steps_${today}`
 
     try {
